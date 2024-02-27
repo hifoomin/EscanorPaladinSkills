@@ -15,6 +15,7 @@ using EscanorPaladinSkills.Components;
 using RoR2.Skills;
 using EscanorPaladinSkills.SkillDefs.Upgrades;
 using EscanorPaladinSkills.States.Upgrades;
+using UnityEngine.SceneManagement;
 
 namespace EscanorPaladinSkills
 {
@@ -124,7 +125,19 @@ namespace EscanorPaladinSkills
                 {
                     logger.LogError("adding the one controller");
                     var theOneController = body.gameObject.AddComponent<TheOneController>();
-                    theOneController.GetTransTime();
+                    var sceneName = SceneManager.GetActiveScene().name;
+                    var timeMultiplier = sceneName switch
+                    {
+                        "moon" => 1.5f,
+                        "moon2" => 1.75f,
+                        "voidstage" => 0.5f,
+                        "limbo" => 0.1f,
+                        "arena" => 0.75f,
+                        _ => 1f
+                    };
+                    var speed = body.moveSpeed / 7f;
+                    timeMultiplier /= Mathf.Sqrt(speed);
+                    theOneController.GetTransTime(timeMultiplier);
                 }
             }
 

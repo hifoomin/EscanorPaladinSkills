@@ -54,7 +54,7 @@ namespace EscanorPaladinSkills.SkillDefs
             (theOneDef as ScriptableObject).name = "PALADIN_THEONE_NAME";
             theOneDef.skillDescriptionToken = "PALADIN_THEONE_DESCRIPTION";
             theOneDef.icon = null;
-            theOneDef.keywordTokens = new string[] { "KEYWORD_CURSED", "KEYWORD_BESTOWED" };
+            theOneDef.keywordTokens = new string[] { "KEYWORD_CURSED", "KEYWORD_THEONE" };
             theOneDef.baseRechargeInterval = 0f;
             theOneDef.activationStateMachineName = "Body";
             theOneDef.activationState = new EntityStates.SerializableEntityStateType(typeof(EntityStates.GenericCharacterMain));
@@ -67,7 +67,7 @@ namespace EscanorPaladinSkills.SkillDefs
             ContentAddition.AddSkillFamily(skill.skillFamily);
 
             LanguageAPI.Add("PALADIN_THEONE_NAME", "The One");
-            LanguageAPI.Add("PALADIN_THEONE_DESCRIPTION", "<style=cDeath>Cursed</style>. While above <style=cIsHealing>90% health</style> or while having <style=cIsHealing>active barrier</style>, the Paladin is <style=cIsHealing>blessed</style>, <style=cIsDamage>empowering</style> all sword skills. Every stage, <style=cIsUtility>run a timer</style>. Once the timer runs out, become <style=cIsDamage>bestowed</style> for <style=cIsDamage>one minute</style>.");
+            LanguageAPI.Add("PALADIN_THEONE_DESCRIPTION", "<style=cDeath>Cursed</style>. While above <style=cIsHealing>90% health</style> or while having <style=cIsHealing>active barrier</style>, the Paladin is <style=cIsHealing>blessed</style>, <style=cIsDamage>empowering</style> all sword skills. Every stage, <style=cIsUtility>run a timer</style>. Once the timer runs out, become <style=cIsDamage>The One</style> for <style=cIsDamage>1 minute</style>.");
 
             IL.RoR2.UI.CharacterSelectController.BuildSkillStripDisplayData += CharacterSelectController_BuildSkillStripDisplayData;
             IL.RoR2.UI.LoadoutPanelController.Rebuild += LoadoutPanelController_Rebuild;

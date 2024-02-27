@@ -13,7 +13,7 @@ namespace EscanorPaladinSkills.SkillDefs
 
         public override string ConfigNameText => "Sunfall";
 
-        public override string DescriptionText => "<style=cIsDamage>Fleeting</style>. <style=cDeath>Stun yourself</style> and call down your hand, summoning <style=cIsDamage>20</style> meteors for <style=cIsDamage>200% damage</style> each.";
+        public override string DescriptionText => "<style=cIsDamage>Fleeting</style>. <style=cDeath>Stun yourself</style> and call down your hand, summoning <style=cIsDamage>20</style> meteors for <style=cIsDamage>300% damage</style> each.";
 
         public override SerializableEntityStateType ActivationState => new(typeof(SunfallState));
 

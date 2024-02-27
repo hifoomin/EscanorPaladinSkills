@@ -24,6 +24,7 @@ namespace EscanorPaladinSkills.Components
         public bool initializedHUD = false;
         public SkillLocator skillLocator;
         public float theOneTimer = 0f;
+        public float timeMultiplier;
 
         private void HUD_shouldHudDisplay(HUD hud, ref bool shouldDisplay)
         {
@@ -36,7 +37,7 @@ namespace EscanorPaladinSkills.Components
             initializedHUD = true;
         }
 
-        public float GetTransTime()
+        public float GetTransTime(float timeScalar)
         {
             body = GetComponent<CharacterBody>();
             body.levelArmor = 0f;
@@ -46,10 +47,11 @@ namespace EscanorPaladinSkills.Components
             theOneBuff = Buffs.All.theOne;
             curseBuff = Buffs.All.curse;
             transitionTimes = new float[4];
-            transitionTimes[0] = 150f;
-            transitionTimes[1] = 180f;
-            transitionTimes[2] = 210f;
-            transitionTimes[3] = 240f;
+            transitionTimes[0] = 160f * timeScalar;
+            transitionTimes[1] = 180f * timeScalar;
+            transitionTimes[2] = 200f * timeScalar;
+            transitionTimes[3] = 215f * timeScalar;
+            timeMultiplier = timeScalar;
             HUD.shouldHudDisplay += HUD_shouldHudDisplay;
 
             if (Run.instance)
@@ -224,50 +226,40 @@ namespace EscanorPaladinSkills.Components
                 return;
             }
 
-            if (theOneController.shouldRunTransitionTimer || theOneController.shouldRunTheOneTimer)
+            var transitionTimer = theOneController.transitionTimer;
+            var theOneTimer = theOneController.theOneTimer;
+
+            if (transitionTimer >= 60f * theOneController.timeMultiplier || theOneTimer <= 30f)
             {
-                if (theOneController.transitionTimer >= 60f || theOneController.theOneTimer <= 30f)
-                {
-                    textMesh.color = new Color32(255, 105, 34, 255);
-                }
-                else if (theOneController.transitionTimer <= 30f || theOneController.theOneTimer >= 50f)
-                {
-                    textMesh.color = new Color32(204, 34, 34, 255);
-                }
-                else
-                {
-                    textMesh.color = new Color32(204, 71, 34, 255);
-                }
-
-                var transitionTimer = theOneController.transitionTimer;
-
-                var transIntegerPart = ((int)transitionTimer).ToString("#,0");
-                var transDecimalPart = (transitionTimer - (int)transitionTimer).ToString("0.00").Substring(1);
-
-                var theOneTimer = theOneController.theOneTimer;
-                var integerPart = ((int)theOneTimer).ToString("#,0");
-                var decimalPart = (theOneTimer - (int)theOneTimer).ToString("0.00").Substring(1);
-
-                if (transitionTimer > 0f)
-                {
-                    textMesh.text = "<mspace=0.5em>The One: " + transIntegerPart + "<sup>" + transDecimalPart + "</sup></mspace>";
-                }
-                else if (AboutEqual(theOneTimer, -999f))
-                {
-                    textMesh.text = string.Empty;
-                }
-                else
-                {
-                    textMesh.text = "<mspace=0.5em>The One: " + integerPart + "<sup>" + decimalPart + "</sup></mspace>";
-                }
+                textMesh.color = new Color32(255, 105, 34, 255);
             }
-        }
+            else if (transitionTimer <= 30f * theOneController.timeMultiplier || theOneTimer >= 50f)
+            {
+                textMesh.color = new Color32(204, 34, 34, 255);
+            }
+            else
+            {
+                textMesh.color = new Color32(204, 71, 34, 255);
+            }
 
-        private bool AboutEqual(object a, object b)
-        {
-            if (a.Equals(b)) return true;
-            if (float.TryParse(a.ToString(), out float fa) && float.TryParse(b.ToString(), out float fb) && Mathf.Abs(fa - fb) < 10) return true;
-            return false;
+            var transIntegerPart = ((int)transitionTimer).ToString("#,0");
+            var transDecimalPart = (transitionTimer - (int)transitionTimer).ToString("0.00").Substring(1);
+
+            var integerPart = ((int)theOneTimer).ToString("#,0");
+            var decimalPart = (theOneTimer - (int)theOneTimer).ToString("0.00").Substring(1);
+
+            if (transitionTimer > 0f)
+            {
+                textMesh.text = "<mspace=0.5em>The One: " + transIntegerPart + "<sup>" + transDecimalPart + "</sup></mspace>";
+            }
+            else if (theOneTimer < -900f)
+            {
+                textMesh.text = string.Empty;
+            }
+            else
+            {
+                textMesh.text = "<mspace=0.5em>The One: " + integerPart + "<sup>" + decimalPart + "</sup></mspace>";
+            }
         }
     }
 }

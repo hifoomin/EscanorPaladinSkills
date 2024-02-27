@@ -77,8 +77,8 @@ namespace EscanorPaladinSkills.Buffs
             ContentAddition.AddBuffDef(curse);
 
             LanguageAPI.Add("KEYWORD_FLEETING", "<style=cKeywordName>Fleeting</style><style=cSub><style=cIsDamage>Attack speed</style> increases <style=cIsDamage>skill damage</style> instead, at <style=cIsDamage66%</style> effectiveness.</style>");
-            LanguageAPI.Add("KEYWORD_CURSED", "<style=cKeywordName>Cursed</style><style=cSub>While not <style=cIsDamage>The One</style>, <style=cDeath>reduce all armor</style> by <style=cDeath>50%</style>, <style=cDeath>maximum health</style> by <style=cDeath>20%</style>, and <style=cDeath>all healing</style> by <style=cDeath>33%</style>.</style>");
-            LanguageAPI.Add("KEYWORD_BESTOWED", "<style=cKeywordName>Bestowed</style><style=cSub><style=cIsHealing>Increase armor</style> by <style=cIsHealing>30</style>, <style=cIsHealing>health regeneration</style> by <style=cIsHealing>100%</style>, and <style=cIsDamage>upgrade skills</style> in unique ways.</style>");
+            LanguageAPI.Add("KEYWORD_CURSED", "<style=cKeywordName>Cursed</style><style=cSub>While not <style=cIsDamage>The One</style>, <style=cDeath>reduce all armor</style> by <style=cDeath>50%</style>, <style=cDeath>maximum health</style> by <style=cDeath>25%</style>, and <style=cDeath>all healing</style> by <style=cDeath>33%</style>.</style>");
+            LanguageAPI.Add("KEYWORD_THEONE", "<style=cKeywordName>The One</style><style=cSub><style=cIsHealing>Increase armor</style> by <style=cIsHealing>30</style>, <style=cIsHealing>health regeneration</style> by <style=cIsHealing>100%</style>, and <style=cIsDamage>upgrade skills</style> in unique ways.</style>");
 
             RecalculateStatsAPI.GetStatCoefficients += RecalculateStatsAPI_GetStatCoefficients;
             GlobalEventManager.onServerDamageDealt += GlobalEventManager_onServerDamageDealt;
@@ -190,7 +190,7 @@ namespace EscanorPaladinSkills.Buffs
             }
             if (sender.HasBuff(curse))
             {
-                args.baseCurseAdd += 0.2f;
+                args.baseCurseAdd += 0.25f;
             }
         }
     }

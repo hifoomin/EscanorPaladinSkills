@@ -70,14 +70,14 @@ namespace EscanorPaladinSkills.States
                 {
                     DamageInfo info = new()
                     {
-                        attacker = gameObject,
+                        attacker = null,
                         procCoefficient = 0,
-                        damage = healthComponent.fullCombinedHealth * 0.0085714285714f,
+                        damage = healthComponent.fullCombinedHealth * 0.01f,
                         crit = false,
                         position = transform.position,
                         damageColorIndex = DamageColorIndex.Fragile,
                         damageType = DamageType.BypassArmor | DamageType.BypassBlock,
-                        inflictor = gameObject
+                        inflictor = null
                     };
 
                     if (NetworkServer.active)

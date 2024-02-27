@@ -111,7 +111,7 @@ namespace EscanorPaladinSkills.States.Upgrades.SpinningSlash
 
                         characterMotor.velocity += forwardDirection * 25f;
                     }
-                    yield return new WaitForSeconds(0.5f);
+                    yield return new WaitForSeconds(duration * 0.3f);
                 }
             }
 
@@ -127,6 +127,7 @@ namespace EscanorPaladinSkills.States.Upgrades.SpinningSlash
                         inHitPause = true;
                     }
                 }
+                yield return new WaitForSeconds(duration * 0.3f);
             }
         }
 

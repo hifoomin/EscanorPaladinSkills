@@ -132,6 +132,9 @@ namespace EscanorPaladinSkills.States
                 {
                     SmallHop(characterMotor, 6f);
                 }
+
+                if (skillLocator.utility.skillDef.skillNameToken == "PALADIN_UTILITY_DASH_NAME") skillLocator.utility.RunRecharge(1f);
+
                 hasHopped = true;
             }
             if (!inHitPause)
