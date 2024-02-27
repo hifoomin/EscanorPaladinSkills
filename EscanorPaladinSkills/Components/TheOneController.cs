@@ -81,7 +81,7 @@ namespace EscanorPaladinSkills.Components
                     }
                     if (!body.HasBuff(theOneBuff))
                     {
-                        if (Main.originalPrimarySkillDefToPrimarySkillDefUpgradeMap.TryGetValue(skillLocator.primary.skillDef, out var upgradedPrimary))
+                        if (Main.originalPrimarySkillDefToPrimarySkillDefUpgradeMap.TryGetValue(skillLocator.primary.baseSkill, out var upgradedPrimary))
                         {
                             skillLocator.primary.SetSkillOverride(gameObject, upgradedPrimary, GenericSkill.SkillOverridePriority.Contextual);
                         }
@@ -90,7 +90,7 @@ namespace EscanorPaladinSkills.Components
                             Main.logger.LogError("The One: No suitable primary skill upgrade was found");
                         }
 
-                        if (Main.originalSecondarySkillDefToPrimarySkillDefUpgradeMap.TryGetValue(skillLocator.secondary.skillDef, out var upgradedSecondary))
+                        if (Main.originalSecondarySkillDefToPrimarySkillDefUpgradeMap.TryGetValue(skillLocator.secondary.baseSkill, out var upgradedSecondary))
                         {
                             skillLocator.secondary.SetSkillOverride(gameObject, upgradedSecondary, GenericSkill.SkillOverridePriority.Contextual);
                         }
@@ -99,7 +99,7 @@ namespace EscanorPaladinSkills.Components
                             Main.logger.LogError("The One: No suitable secondary skill upgrade was found");
                         }
 
-                        if (Main.originalUtilitySkillDefToPrimarySkillDefUpgradeMap.TryGetValue(skillLocator.utility.skillDef, out var upgradedUtility))
+                        if (Main.originalUtilitySkillDefToPrimarySkillDefUpgradeMap.TryGetValue(skillLocator.utility.baseSkill, out var upgradedUtility))
                         {
                             skillLocator.utility.SetSkillOverride(gameObject, upgradedUtility, GenericSkill.SkillOverridePriority.Contextual);
                         }
@@ -108,7 +108,7 @@ namespace EscanorPaladinSkills.Components
                             Main.logger.LogError("The One: No suitable utility skill upgrade was found");
                         }
 
-                        if (Main.originalSpecialSkillDefToPrimarySkillDefUpgradeMap.TryGetValue(skillLocator.special.skillDef, out var upgradedSpecial))
+                        if (Main.originalSpecialSkillDefToPrimarySkillDefUpgradeMap.TryGetValue(skillLocator.special.baseSkill, out var upgradedSpecial))
                         {
                             skillLocator.special.SetSkillOverride(gameObject, upgradedSpecial, GenericSkill.SkillOverridePriority.Contextual);
                         }
@@ -134,22 +134,22 @@ namespace EscanorPaladinSkills.Components
                     }
                     if (body.HasBuff(theOneBuff))
                     {
-                        if (Main.originalPrimarySkillDefToPrimarySkillDefUpgradeMap.TryGetValue(skillLocator.primary.skillDef, out var upgradedPrimary))
+                        if (Main.originalPrimarySkillDefToPrimarySkillDefUpgradeMap.TryGetValue(skillLocator.primary.baseSkill, out var upgradedPrimary))
                         {
                             skillLocator.primary.UnsetSkillOverride(gameObject, upgradedPrimary, GenericSkill.SkillOverridePriority.Contextual);
                         }
 
-                        if (Main.originalSecondarySkillDefToPrimarySkillDefUpgradeMap.TryGetValue(skillLocator.secondary.skillDef, out var upgradedSecondary))
+                        if (Main.originalSecondarySkillDefToPrimarySkillDefUpgradeMap.TryGetValue(skillLocator.secondary.baseSkill, out var upgradedSecondary))
                         {
                             skillLocator.secondary.UnsetSkillOverride(gameObject, upgradedSecondary, GenericSkill.SkillOverridePriority.Contextual);
                         }
 
-                        if (Main.originalUtilitySkillDefToPrimarySkillDefUpgradeMap.TryGetValue(skillLocator.utility.skillDef, out var upgradedUtility))
+                        if (Main.originalUtilitySkillDefToPrimarySkillDefUpgradeMap.TryGetValue(skillLocator.utility.baseSkill, out var upgradedUtility))
                         {
                             skillLocator.utility.UnsetSkillOverride(gameObject, upgradedUtility, GenericSkill.SkillOverridePriority.Contextual);
                         }
 
-                        if (Main.originalSpecialSkillDefToPrimarySkillDefUpgradeMap.TryGetValue(skillLocator.special.skillDef, out var upgradedSpecial))
+                        if (Main.originalSpecialSkillDefToPrimarySkillDefUpgradeMap.TryGetValue(skillLocator.special.baseSkill, out var upgradedSpecial))
                         {
                             skillLocator.special.UnsetSkillOverride(gameObject, upgradedSpecial, GenericSkill.SkillOverridePriority.Contextual);
                         }
@@ -201,7 +201,7 @@ namespace EscanorPaladinSkills.Components
             elem.minHeight = 120;
             elem.preferredWidth = 500;
 
-            rect.pivot = new Vector2(1f, 0);
+            rect.pivot = new Vector2(1.15f, 0);
             rect.anchoredPosition = rect.pivot;
 
             //var image = uiContainer.AddComponent<Image>();
@@ -223,7 +223,8 @@ namespace EscanorPaladinSkills.Components
                 StartCoroutine(Init());
                 return;
             }
-            if (theOneController.shouldRunTransitionTimer)
+
+            if (theOneController.shouldRunTransitionTimer || theOneController.shouldRunTheOneTimer)
             {
                 if (theOneController.transitionTimer >= 60f || theOneController.theOneTimer <= 30f)
                 {
@@ -249,15 +250,15 @@ namespace EscanorPaladinSkills.Components
 
                 if (transitionTimer > 0f)
                 {
-                    textMesh.text = "<mspace=0.6em>The One: " + transIntegerPart + "<sup>" + transDecimalPart + "</sup></mspace>";
+                    textMesh.text = "<mspace=0.5em>The One: " + transIntegerPart + "<sup>" + transDecimalPart + "</sup></mspace>";
                 }
                 else if (AboutEqual(theOneTimer, -999f))
                 {
-                    textMesh.text = "";
+                    textMesh.text = string.Empty;
                 }
                 else
                 {
-                    textMesh.text = "<mspace=0.6em>The One: " + integerPart + "<sup>" + decimalPart + "</sup></mspace>";
+                    textMesh.text = "<mspace=0.5em>The One: " + integerPart + "<sup>" + decimalPart + "</sup></mspace>";
                 }
             }
         }
