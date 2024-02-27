@@ -58,7 +58,7 @@ namespace EscanorPaladinSkills.States
                         overlay2.AddToCharacerModel(modelTransform.GetComponent<CharacterModel>());
                     }
 
-                    if (characterBody)
+                    if (characterBody && NetworkServer.active)
                     {
                         characterBody.AddBuff(Buffs.All.healingRemoval);
                         characterBody.AddBuff(Buffs.All.enrage);
@@ -101,7 +101,7 @@ namespace EscanorPaladinSkills.States
             // PlayAnimation("Gesture, Override", "ChargeSpell", "Spell.playbackRate", castAnimationDuration);
             Util.PlaySound("Play_mage_R_end", gameObject);
             Util.PlaySound("Stop_item_use_hellfire_loop", gameObject);
-            if (characterBody)
+            if (characterBody && NetworkServer.active)
             {
                 characterBody.RemoveBuff(Buffs.All.healingRemoval);
                 characterBody.RemoveBuff(Buffs.All.enrage);

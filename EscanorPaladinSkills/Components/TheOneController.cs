@@ -7,15 +7,17 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Networking;
 using UnityEngine.UI;
 
 namespace EscanorPaladinSkills.Components
 {
+    [DisallowMultipleComponent]
     public class TheOneController : MonoBehaviour
     {
         public float[] transitionTimes;
-        public float transitionTimer;
-        public float chosenTransitionTimer;
+        public float transitionTimer = 0f;
+        public float chosenTransitionTimer = 0f;
         public bool shouldRunTransitionTimer = false;
         public bool shouldRunTheOneTimer = false;
         public BuffDef theOneBuff;
@@ -56,7 +58,7 @@ namespace EscanorPaladinSkills.Components
 
             if (Run.instance)
             {
-                if (!body.HasBuff(curseBuff))
+                if (!body.HasBuff(curseBuff) && NetworkServer.active)
                 {
                     body.AddBuff(curseBuff);
                 }
@@ -77,7 +79,7 @@ namespace EscanorPaladinSkills.Components
                 transitionTimer -= Time.fixedDeltaTime;
                 if (transitionTimer <= 0f)
                 {
-                    if (body.HasBuff(curseBuff))
+                    if (body.HasBuff(curseBuff) && NetworkServer.active)
                     {
                         body.RemoveBuff(curseBuff);
                     }
@@ -118,8 +120,8 @@ namespace EscanorPaladinSkills.Components
                         {
                             Main.logger.LogError("The One: No suitable special skill upgrade was found");
                         }
-
-                        body.AddBuff(theOneBuff);
+                        if (NetworkServer.active)
+                            body.AddBuff(theOneBuff);
                     }
                     shouldRunTheOneTimer = true;
                     shouldRunTransitionTimer = false;
@@ -130,7 +132,7 @@ namespace EscanorPaladinSkills.Components
                 theOneTimer += Time.fixedDeltaTime;
                 if (theOneTimer >= 60f)
                 {
-                    if (!body.HasBuff(curseBuff))
+                    if (!body.HasBuff(curseBuff) && NetworkServer.active)
                     {
                         body.AddBuff(curseBuff);
                     }
@@ -155,15 +157,22 @@ namespace EscanorPaladinSkills.Components
                         {
                             skillLocator.special.UnsetSkillOverride(gameObject, upgradedSpecial, GenericSkill.SkillOverridePriority.Contextual);
                         }
-                        body.RemoveBuff(theOneBuff);
+                        if (NetworkServer.active)
+                            body.RemoveBuff(theOneBuff);
                     }
                     theOneTimer = -999f;
                     shouldRunTheOneTimer = false;
                 }
             }
         }
+
+        public void OnDestroy()
+        {
+            HUD.shouldHudDisplay -= HUD_shouldHudDisplay;
+        }
     }
 
+    [DisallowMultipleComponent]
     public class TheOneHUD : MonoBehaviour
     {
         public HUD hud;
@@ -173,8 +182,19 @@ namespace EscanorPaladinSkills.Components
 
         public IEnumerator Init()
         {
+            if (!Run.instance)
+            {
+                yield break;
+            }
+
+            if (!hud.targetMaster)
+            {
+                yield break;
+            }
+
             body = hud.targetMaster.GetBody();
-            if (body)
+
+            if (body && body.bodyIndex == Main.paladinBodyIndex)
             {
                 Main.logger.LogError("finally initialized holy shit");
                 theOneController = body.GetComponent<TheOneController>();
@@ -188,11 +208,11 @@ namespace EscanorPaladinSkills.Components
             hud = GetComponent<HUD>();
 
             var theOneContainer = new GameObject("TheOneContainer");
-            Main.logger.LogError("the one container is " + theOneContainer);
+            // Main.logger.LogError("the one container is " + theOneContainer);
 
             var locator = hud.GetComponent<ChildLocator>();
             var upperRightCluster = locator.FindChild("TopCenterCluster").parent.Find("UpperRightCluster");
-            Main.logger.LogError("upper right cluster is " + upperRightCluster);
+            // Main.logger.LogError("upper right cluster is " + upperRightCluster);
             theOneContainer.transform.SetParent(upperRightCluster);
             var rect = theOneContainer.AddComponent<RectTransform>();
             rect.localPosition = Vector3.zero;

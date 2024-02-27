@@ -41,9 +41,13 @@ namespace EscanorPaladinSkills
         public static Dictionary<SkillDef, SkillDef> originalUtilitySkillDefToPrimarySkillDefUpgradeMap = new();
         public static Dictionary<SkillDef, SkillDef> originalSpecialSkillDefToPrimarySkillDefUpgradeMap = new();
 
+        public static BodyIndex paladinBodyIndex;
+
         public void Awake()
         {
             logger = base.Logger;
+
+            On.RoR2.BodyCatalog.Init += BodyCatalog_Init;
 
             escanor = AssetBundle.LoadFromFile(Assembly.GetExecutingAssembly().Location.Replace("EscanorPaladinSkills.dll", "escanorpaladinskills"));
 
@@ -55,6 +59,12 @@ namespace EscanorPaladinSkills
             VFX.Judgement.Init();
             Projectiles.Judgement.Init();
             Projectiles.Sunfall.Init();
+        }
+
+        private void BodyCatalog_Init(On.RoR2.BodyCatalog.orig_Init orig)
+        {
+            orig();
+            paladinBodyIndex = BodyCatalog.FindBodyIndex("RobPaladinBody");
         }
 
         public void Start()
@@ -114,10 +124,11 @@ namespace EscanorPaladinSkills
 
         private void CharacterBody_onBodyStartGlobal(CharacterBody body)
         {
-            if (!body.baseNameToken.ToLower().Contains("paladin"))
+            if (body.bodyIndex != paladinBodyIndex)
             {
                 return;
             }
+
             var passive = body.GetComponents<GenericSkill>().Where(x => x.skillDef.skillNameToken == "PALADIN_THEONE_NAME").FirstOrDefault();
             if (passive)
             {

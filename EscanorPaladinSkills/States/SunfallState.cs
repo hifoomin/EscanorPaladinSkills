@@ -39,20 +39,23 @@ namespace EscanorPaladinSkills.States
                 yield return new WaitForSeconds(0.06f);
                 aimRay = new Ray(inputBank.aimOrigin + (inputBank.aimDirection * 1f), inputBank.aimDirection);
                 AddRecoil(-1f, -1.5f, -0.75f, 0.75f);
-                if (isAuthority)
+
+                Main.logger.LogError("run instance treasure rng is " + Run.instance.treasureRng);
+
+                if (Physics.Raycast(aimRay, out var raycastInfo, 1000f, LayerIndex.CommonMasks.bullet, QueryTriggerInteraction.Ignore))
                 {
-                    if (Physics.Raycast(aimRay, out var raycastInfo, 1000f, LayerIndex.CommonMasks.bullet, QueryTriggerInteraction.Ignore))
+                    var fpi = new FireProjectileInfo()
                     {
-                        var fpi = new FireProjectileInfo()
-                        {
-                            crit = RollCrit(),
-                            damage = damageStat * (3f + ((attackSpeedStat - 1f) * 2f)),
-                            damageTypeOverride = DamageType.Generic,
-                            owner = gameObject,
-                            position = raycastInfo.point + new Vector3(Run.instance.treasureRng.RangeFloat(-1.5f * i, 1.5f * i), 45f + Run.instance.treasureRng.RangeFloat(-1.1f * i, 1.1f * i), Run.instance.treasureRng.RangeFloat(-1.51f * i, 1.51f * i)),
-                            rotation = Util.QuaternionSafeLookRotation(new Vector3(Run.instance.treasureRng.RangeFloat(0f, 0.02f * i), -1f, Run.instance.treasureRng.RangeFloat(0f, 0.021f * i))),
-                            projectilePrefab = Projectiles.Sunfall.prefab,
-                        };
+                        crit = RollCrit(),
+                        damage = damageStat * (3f + ((attackSpeedStat - 1f) * 2f)),
+                        damageTypeOverride = DamageType.Generic,
+                        owner = gameObject,
+                        position = raycastInfo.point + new Vector3(Run.instance.treasureRng.RangeFloat(-1.5f * i, 1.5f * i), 45f + Run.instance.treasureRng.RangeFloat(-1.1f * i, 1.1f * i), Run.instance.treasureRng.RangeFloat(-1.51f * i, 1.51f * i)),
+                        rotation = Util.QuaternionSafeLookRotation(new Vector3(Run.instance.treasureRng.RangeFloat(0f, 0.02f * i), -1f, Run.instance.treasureRng.RangeFloat(0f, 0.021f * i))),
+                        projectilePrefab = Projectiles.Sunfall.prefab,
+                    };
+                    if (isAuthority)
+                    {
                         ProjectileManager.instance.FireProjectile(fpi);
                     }
                 }
@@ -78,8 +81,7 @@ namespace EscanorPaladinSkills.States
 
             if (fixedAge >= 3f && !hasFired)
             {
-                characterBody.StartCoroutine(Fire());
-                Fire();
+                outer.StartCoroutine(Fire());
                 PlayAnimation("FullBody, Override", "BufferEmpty");
 
                 hasFired = true;

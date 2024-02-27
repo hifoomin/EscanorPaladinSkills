@@ -164,7 +164,7 @@ namespace EscanorPaladinSkills.States.Upgrades.SpinningSlash
 
             if ((skillStarted && !skillEnded) || (skillStarted && skillEnded && !hasFired))
             {
-                characterBody.StartCoroutine(FireAttack());
+                outer.StartCoroutine(FireAttack());
             }
 
             if (stopwatch >= duration * 0.6f)
