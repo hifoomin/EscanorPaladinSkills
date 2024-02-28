@@ -51,16 +51,16 @@ namespace EscanorPaladinSkills.Components
             textMesh.text = string.Empty;
         }
 
-        public IEnumerator TryInit()
+        public void TryInit()
         {
             if (!Run.instance)
             {
-                yield break;
+                return;
             }
 
             if (!hud.targetMaster)
             {
-                yield break;
+                return;
             }
 
             body = hud.targetMaster.GetBody();
@@ -76,7 +76,7 @@ namespace EscanorPaladinSkills.Components
             if (!body || !theOneController)
             {
                 textMesh.text = string.Empty;
-                StartCoroutine(TryInit());
+                TryInit();
                 return;
             }
 

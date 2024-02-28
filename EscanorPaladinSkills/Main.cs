@@ -39,9 +39,9 @@ namespace EscanorPaladinSkills
         public static ManualLogSource logger;
 
         public static Dictionary<SkillDef, SkillDef> originalPrimarySkillDefToPrimarySkillDefUpgradeMap = new();
-        public static Dictionary<SkillDef, SkillDef> originalSecondarySkillDefToPrimarySkillDefUpgradeMap = new();
-        public static Dictionary<SkillDef, SkillDef> originalUtilitySkillDefToPrimarySkillDefUpgradeMap = new();
-        public static Dictionary<SkillDef, SkillDef> originalSpecialSkillDefToPrimarySkillDefUpgradeMap = new();
+        public static Dictionary<SkillDef, SkillDef> originalSecondarySkillDefToSecondarySkillDefUpgradeMap = new();
+        public static Dictionary<SkillDef, SkillDef> originalUtilitySkillDefToUtilitySkillDefUpgradeMap = new();
+        public static Dictionary<SkillDef, SkillDef> originalSpecialSkillDefToSpecialSkillDefUpgradeMap = new();
 
         public static BodyIndex paladinBodyIndex;
 
@@ -128,8 +128,8 @@ namespace EscanorPaladinSkills
             // 2 = spinning slash m2
             // 3 =
 
-            originalSecondarySkillDefToPrimarySkillDefUpgradeMap.Add(SunshineCruelSunSD.instance.skillDef, SunshineCruelSunUpgradedSD.instance.skillDef);
-            originalSecondarySkillDefToPrimarySkillDefUpgradeMap.Add(PaladinMod.Modules.Skills.skillFamilies[1].variants[0].skillDef, SpinningSlashUpgradedSD.instance.skillDef);
+            originalSecondarySkillDefToSecondarySkillDefUpgradeMap.Add(SunshineCruelSunSD.instance.skillDef, SunshineCruelSunUpgradedSD.instance.skillDef);
+            originalSecondarySkillDefToSecondarySkillDefUpgradeMap.Add(PaladinMod.Modules.Skills.skillFamilies[1].variants[0].skillDef, SpinningSlashUpgradedSD.instance.skillDef);
 
             CharacterBody.onBodyStartGlobal += CharacterBody_onBodyStartGlobal;
             HUD.shouldHudDisplay += HUD_shouldHudDisplay;
@@ -169,11 +169,6 @@ namespace EscanorPaladinSkills
                     timeMultiplier /= Mathf.Sqrt(speed);
                     theOneController.GetTransTime(timeMultiplier);
                 }
-            }
-
-            if (NetworkServer.active && body.master)
-            {
-                body.master.Respawn(body.footPosition, body.transform.rotation);
             }
 
             var modelLocator = body.modelLocator;
@@ -222,11 +217,10 @@ namespace EscanorPaladinSkills
             {
                 var childLocator = trans.GetComponent<ChildLocator>();
                 var lowerArmR = childLocator.transformPairs[35].transform;
-                // lowerArmR.localScale = Vector3.one * 1.5f;
 
                 var swordBase = lowerArmR.Find("hand.R/swordBase");
-                var stupid = swordBase.gameObject.AddComponent<StupidSwordController>();
-                stupid.sword = swordBase;
+                var swordSizeController = swordBase.gameObject.AddComponent<SwordSizeController>();
+                swordSizeController.sword = swordBase;
             }
         }
 
@@ -241,27 +235,6 @@ namespace EscanorPaladinSkills
                 }
             }
             return false;
-        }
-
-        public class StupidSwordController : MonoBehaviour
-        {
-            public Vector3 idealSwordSize;
-            public Transform sword;
-
-            public void Start()
-            {
-                idealSwordSize = Vector3.one * 1.5f;
-            }
-
-            public void LateUpdate()
-            {
-                if (!sword)
-                {
-                    return;
-                }
-
-                sword.localScale = idealSwordSize;
-            }
         }
     }
 }
