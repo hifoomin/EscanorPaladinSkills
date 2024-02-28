@@ -31,6 +31,14 @@ namespace EscanorPaladinSkills.Projectiles
 
             var newImpact = PrefabAPI.InstantiateClone(Addressables.LoadAssetAsync<GameObject>("RoR2/Base/Grandparent/GrandparentSpawnImpact.prefab").WaitForCompletion(), "Cruel Sun Impact", false);
 
+            var particles = newImpact.transform.Find("Particles");
+
+            for (int i = 0; i < particles.childCount; i++)
+            {
+                var child = particles.GetChild(i);
+                child.localScale *= 0.5f;
+            }
+
             var effectComponent = newImpact.GetComponent<EffectComponent>();
             effectComponent.soundName = "PaladinExplosion";
 

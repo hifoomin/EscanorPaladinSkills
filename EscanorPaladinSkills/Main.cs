@@ -16,6 +16,8 @@ using RoR2.Skills;
 using EscanorPaladinSkills.SkillDefs.Upgrades;
 using EscanorPaladinSkills.States.Upgrades;
 using UnityEngine.SceneManagement;
+using RoR2.UI;
+using UnityEngine.Networking;
 
 namespace EscanorPaladinSkills
 {
@@ -43,11 +45,16 @@ namespace EscanorPaladinSkills
 
         public static BodyIndex paladinBodyIndex;
 
+        public static Xoroshiro128Plus rng;
+
         public void Awake()
         {
             logger = base.Logger;
 
             On.RoR2.BodyCatalog.Init += BodyCatalog_Init;
+            Run.onRunStartGlobal += Run_onRunStartGlobal;
+
+            On.RoR2.Networking.NetworkManagerSystemSteam.OnClientConnect += (s, u, t) => { };
 
             escanor = AssetBundle.LoadFromFile(Assembly.GetExecutingAssembly().Location.Replace("EscanorPaladinSkills.dll", "escanorpaladinskills"));
 
@@ -59,6 +66,11 @@ namespace EscanorPaladinSkills
             VFX.Judgement.Init();
             Projectiles.Judgement.Init();
             Projectiles.Sunfall.Init();
+        }
+
+        private void Run_onRunStartGlobal(Run run)
+        {
+            rng = new Xoroshiro128Plus(RoR2Application.rng.nextUlong);
         }
 
         private void BodyCatalog_Init(On.RoR2.BodyCatalog.orig_Init orig)
@@ -120,6 +132,13 @@ namespace EscanorPaladinSkills
             originalSecondarySkillDefToPrimarySkillDefUpgradeMap.Add(PaladinMod.Modules.Skills.skillFamilies[1].variants[0].skillDef, SpinningSlashUpgradedSD.instance.skillDef);
 
             CharacterBody.onBodyStartGlobal += CharacterBody_onBodyStartGlobal;
+            HUD.shouldHudDisplay += HUD_shouldHudDisplay;
+        }
+
+        private void HUD_shouldHudDisplay(HUD hud, ref bool shouldDisplay)
+        {
+            if (hud.GetComponent<TheOneHUD>() == null)
+                hud.gameObject.AddComponent<TheOneHUD>();
         }
 
         private void CharacterBody_onBodyStartGlobal(CharacterBody body)
@@ -150,6 +169,11 @@ namespace EscanorPaladinSkills
                     timeMultiplier /= Mathf.Sqrt(speed);
                     theOneController.GetTransTime(timeMultiplier);
                 }
+            }
+
+            if (NetworkServer.active && body.master)
+            {
+                body.master.Respawn(body.footPosition, body.transform.rotation);
             }
 
             var modelLocator = body.modelLocator;

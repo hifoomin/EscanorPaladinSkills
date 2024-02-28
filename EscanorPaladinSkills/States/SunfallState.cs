@@ -3,6 +3,7 @@ using RoR2;
 using RoR2.Projectile;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Networking;
 
 namespace EscanorPaladinSkills.States
 {
@@ -25,7 +26,7 @@ namespace EscanorPaladinSkills.States
 
             PlayAnimation("FullBody, Override", "PointDown", "Emote.playbackRate", 3f);
 
-            if (characterBody)
+            if (characterBody && NetworkServer.active)
             {
                 characterBody.AddBuff(Buffs.All.slow);
             }
@@ -40,8 +41,6 @@ namespace EscanorPaladinSkills.States
                 aimRay = new Ray(inputBank.aimOrigin + (inputBank.aimDirection * 1f), inputBank.aimDirection);
                 AddRecoil(-1f, -1.5f, -0.75f, 0.75f);
 
-                Main.logger.LogError("run instance treasure rng is " + Run.instance.treasureRng);
-
                 if (Physics.Raycast(aimRay, out var raycastInfo, 1000f, LayerIndex.CommonMasks.bullet, QueryTriggerInteraction.Ignore))
                 {
                     var fpi = new FireProjectileInfo()
@@ -50,8 +49,8 @@ namespace EscanorPaladinSkills.States
                         damage = damageStat * (3f + ((attackSpeedStat - 1f) * 2f)),
                         damageTypeOverride = DamageType.Generic,
                         owner = gameObject,
-                        position = raycastInfo.point + new Vector3(Run.instance.treasureRng.RangeFloat(-1.5f * i, 1.5f * i), 45f + Run.instance.treasureRng.RangeFloat(-1.1f * i, 1.1f * i), Run.instance.treasureRng.RangeFloat(-1.51f * i, 1.51f * i)),
-                        rotation = Util.QuaternionSafeLookRotation(new Vector3(Run.instance.treasureRng.RangeFloat(0f, 0.02f * i), -1f, Run.instance.treasureRng.RangeFloat(0f, 0.021f * i))),
+                        position = raycastInfo.point + new Vector3(Main.rng.RangeFloat(-1.5f * i, 1.5f * i), 45f + Main.rng.RangeFloat(-1.1f * i, 1.1f * i), Main.rng.RangeFloat(-1.51f * i, 1.51f * i)),
+                        rotation = Util.QuaternionSafeLookRotation(new Vector3(Main.rng.RangeFloat(0f, 0.02f * i), -1f, Main.rng.RangeFloat(0f, 0.021f * i))),
                         projectilePrefab = Projectiles.Sunfall.prefab,
                     };
                     if (isAuthority)
@@ -99,7 +98,7 @@ namespace EscanorPaladinSkills.States
         {
             base.OnExit();
 
-            if (characterBody)
+            if (characterBody && NetworkServer.active)
             {
                 characterBody.RemoveBuff(Buffs.All.slow);
             }
