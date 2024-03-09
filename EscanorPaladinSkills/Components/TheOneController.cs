@@ -27,12 +27,8 @@ namespace EscanorPaladinSkills.Components
         public SkillLocator skillLocator;
         public float theOneTimer = 0f;
         public float timeMultiplier;
-
-        public enum SwitchType
-        {
-            Upgrade,
-            Standard
-        }
+        public ModelLocator modelLocator;
+        public Transform modelTransform;
 
         public float GetTransTime(float timeScalar)
         {
@@ -40,6 +36,8 @@ namespace EscanorPaladinSkills.Components
             body.levelArmor = 0f;
 
             skillLocator = GetComponent<SkillLocator>();
+            modelLocator = GetComponent<ModelLocator>();
+            modelTransform = modelLocator.modelTransform;
 
             theOneBuff = Buffs.All.theOne;
             curseBuff = Buffs.All.curse;
@@ -61,10 +59,37 @@ namespace EscanorPaladinSkills.Components
                 transitionTimer = chosenTransitionTimer;
                 shouldRunTransitionTimer = true;
 
-                Main.logger.LogError("the one controller chosen transition timer is " + chosenTransitionTimer);
+                // Main.logger.LogError("the one controller chosen transition timer is " + chosenTransitionTimer);
+
+                if (modelTransform)
+                {
+                    var overlay1PreTransition = chosenTransitionTimer * 0.01f / chosenTransitionTimer;
+                    var overlay1JustTransitioning = chosenTransitionTimer / (chosenTransitionTimer + 50f);
+                    var overlay1StoppingTransition = (chosenTransitionTimer + 45f) / (chosenTransitionTimer + 50f);
+                    var overlay2PreTransition = chosenTransitionTimer * 0.02f / chosenTransitionTimer;
+                    var overlay2JustTransitioning = chosenTransitionTimer / (chosenTransitionTimer + 60f);
+                    var overlay2StoppingTransition = (chosenTransitionTimer + 55f) / (chosenTransitionTimer + 60f);
+
+                    var overlay1 = modelTransform.gameObject.AddComponent<TemporaryOverlay>();
+                    overlay1.duration = chosenTransitionTimer + 50f;
+                    overlay1.animateShaderAlpha = true;
+                    overlay1.alphaCurve = new AnimationCurve(new Keyframe(0f, 0f), new Keyframe(overlay1PreTransition, 0.1f), new Keyframe(overlay1JustTransitioning, 0.4f), new Keyframe(overlay1JustTransitioning + Mathf.Epsilon, 1f), new Keyframe(overlay1StoppingTransition, 1f), new Keyframe(1f, 0f));
+                    overlay1.destroyComponentOnEnd = true;
+                    overlay1.originalMaterial = Overlays.TheOne.prefab1;
+                    overlay1.AddToCharacerModel(modelTransform.GetComponent<CharacterModel>());
+
+                    var overlay2 = modelTransform.gameObject.AddComponent<TemporaryOverlay>();
+                    overlay2.duration = chosenTransitionTimer + 60f;
+                    overlay2.animateShaderAlpha = true;
+                    overlay2.alphaCurve = new AnimationCurve(new Keyframe(0f, 0f), new Keyframe(overlay2PreTransition, 0.1f), new Keyframe(overlay2JustTransitioning, 0.4f), new Keyframe(overlay2JustTransitioning + Mathf.Epsilon, 1f), new Keyframe(overlay2StoppingTransition, 1f), new Keyframe(1f, 0f));
+                    overlay2.destroyComponentOnEnd = true;
+                    overlay2.originalMaterial = Overlays.TheOne.prefab2;
+                    overlay2.AddToCharacerModel(modelTransform.GetComponent<CharacterModel>());
+                }
 
                 return chosenTransitionTimer;
             }
+
             return float.MaxValue;
         }
 
@@ -81,7 +106,49 @@ namespace EscanorPaladinSkills.Components
                     }
                     if (!body.HasBuff(theOneBuff))
                     {
-                        SwitchSkills(SwitchType.Upgrade);
+                        if (body.hasAuthority)
+                        {
+                            if (Main.originalPrimarySkillDefToPrimarySkillDefUpgradeMap.TryGetValue(skillLocator.primary.baseSkill, out var upgradedPrimary))
+                            {
+                                skillLocator.primary.SetSkillOverride(gameObject, upgradedPrimary, GenericSkill.SkillOverridePriority.Contextual);
+                            }
+                            else
+                            {
+                                Main.logger.LogError("The One: No suitable primary skill upgrade was found");
+                            }
+
+                            if (Main.originalSecondarySkillDefToSecondarySkillDefUpgradeMap.TryGetValue(skillLocator.secondary.baseSkill, out var upgradedSecondary))
+                            {
+                                skillLocator.secondary.SetSkillOverride(gameObject, upgradedSecondary, GenericSkill.SkillOverridePriority.Contextual);
+                            }
+                            else
+                            {
+                                Main.logger.LogError("The One: No suitable secondary skill upgrade was found");
+                            }
+
+                            if (Main.originalUtilitySkillDefToUtilitySkillDefUpgradeMap.TryGetValue(skillLocator.utility.baseSkill, out var upgradedUtility))
+                            {
+                                skillLocator.utility.SetSkillOverride(gameObject, upgradedUtility, GenericSkill.SkillOverridePriority.Contextual);
+                            }
+                            else
+                            {
+                                Main.logger.LogError("The One: No suitable secondary skill upgrade was found");
+                            }
+
+                            if (Main.originalSpecialSkillDefToSpecialSkillDefUpgradeMap.TryGetValue(skillLocator.special.baseSkill, out var upgradedSpecial))
+                            {
+                                skillLocator.special.SetSkillOverride(gameObject, upgradedSpecial, GenericSkill.SkillOverridePriority.Contextual);
+                            }
+                            else
+                            {
+                                Main.logger.LogError("The One: No suitable secondary skill upgrade was found");
+                            }
+                        }
+
+                        Util.PlaySound("Play_lemurian_fireball_impact", gameObject);
+                        Util.PlaySound("Play_lemurian_fireball_impact", gameObject);
+                        Util.PlaySound("Play_lemurian_fireball_impact", gameObject);
+                        Util.PlaySound("Play_moonBrother_orb_slam_impact", gameObject);
 
                         if (NetworkServer.active)
                         {
@@ -103,7 +170,44 @@ namespace EscanorPaladinSkills.Components
                     }
                     if (body.HasBuff(theOneBuff))
                     {
-                        SwitchSkills(SwitchType.Standard);
+                        if (body.hasAuthority)
+                        {
+                            if (Main.originalPrimarySkillDefToPrimarySkillDefUpgradeMap.TryGetValue(skillLocator.primary.baseSkill, out var upgradedPrimary))
+                            {
+                                skillLocator.primary.UnsetSkillOverride(gameObject, upgradedPrimary, GenericSkill.SkillOverridePriority.Contextual);
+                            }
+                            else
+                            {
+                                Main.logger.LogError("The One: No suitable primary skill upgrade was found");
+                            }
+
+                            if (Main.originalSecondarySkillDefToSecondarySkillDefUpgradeMap.TryGetValue(skillLocator.secondary.baseSkill, out var upgradedSecondary))
+                            {
+                                skillLocator.secondary.UnsetSkillOverride(gameObject, upgradedSecondary, GenericSkill.SkillOverridePriority.Contextual);
+                            }
+                            else
+                            {
+                                Main.logger.LogError("The One: No suitable secondary skill upgrade was found");
+                            }
+
+                            if (Main.originalUtilitySkillDefToUtilitySkillDefUpgradeMap.TryGetValue(skillLocator.utility.baseSkill, out var upgradedUtility))
+                            {
+                                skillLocator.utility.UnsetSkillOverride(gameObject, upgradedUtility, GenericSkill.SkillOverridePriority.Contextual);
+                            }
+                            else
+                            {
+                                Main.logger.LogError("The One: No suitable secondary skill upgrade was found");
+                            }
+
+                            if (Main.originalSpecialSkillDefToSpecialSkillDefUpgradeMap.TryGetValue(skillLocator.special.baseSkill, out var upgradedSpecial))
+                            {
+                                skillLocator.special.UnsetSkillOverride(gameObject, upgradedSpecial, GenericSkill.SkillOverridePriority.Contextual);
+                            }
+                            else
+                            {
+                                Main.logger.LogError("The One: No suitable secondary skill upgrade was found");
+                            }
+                        }
 
                         if (NetworkServer.active)
                         {
@@ -112,76 +216,6 @@ namespace EscanorPaladinSkills.Components
                     }
                     theOneTimer = -999f;
                     shouldRunTheOneTimer = false;
-                }
-            }
-        }
-
-        public void SwitchSkills(SwitchType switchType)
-        {
-            if (body.hasAuthority)
-            {
-                if (Main.originalPrimarySkillDefToPrimarySkillDefUpgradeMap.TryGetValue(skillLocator.primary.baseSkill, out var upgradedPrimary))
-                {
-                    if (switchType == SwitchType.Upgrade)
-                    {
-                        skillLocator.primary.SetSkillOverride(gameObject, upgradedPrimary, GenericSkill.SkillOverridePriority.Contextual);
-                    }
-                    else
-                    {
-                        skillLocator.primary.UnsetSkillOverride(gameObject, upgradedPrimary, GenericSkill.SkillOverridePriority.Contextual);
-                    }
-                }
-                else
-                {
-                    Main.logger.LogError("The One: No suitable primary skill upgrade was found");
-                }
-
-                if (Main.originalSecondarySkillDefToSecondarySkillDefUpgradeMap.TryGetValue(skillLocator.secondary.baseSkill, out var upgradedSecondary))
-                {
-                    if (switchType == SwitchType.Upgrade)
-                    {
-                        skillLocator.secondary.SetSkillOverride(gameObject, upgradedSecondary, GenericSkill.SkillOverridePriority.Contextual);
-                    }
-                    else
-                    {
-                        skillLocator.secondary.UnsetSkillOverride(gameObject, upgradedSecondary, GenericSkill.SkillOverridePriority.Contextual);
-                    }
-                }
-                else
-                {
-                    Main.logger.LogError("The One: No suitable secondary skill upgrade was found");
-                }
-
-                if (Main.originalUtilitySkillDefToUtilitySkillDefUpgradeMap.TryGetValue(skillLocator.utility.baseSkill, out var upgradedUtility))
-                {
-                    if (switchType == SwitchType.Upgrade)
-                    {
-                        skillLocator.utility.SetSkillOverride(gameObject, upgradedUtility, GenericSkill.SkillOverridePriority.Contextual);
-                    }
-                    else
-                    {
-                        skillLocator.utility.UnsetSkillOverride(gameObject, upgradedUtility, GenericSkill.SkillOverridePriority.Contextual);
-                    }
-                }
-                else
-                {
-                    Main.logger.LogError("The One: No suitable secondary skill upgrade was found");
-                }
-
-                if (Main.originalSpecialSkillDefToSpecialSkillDefUpgradeMap.TryGetValue(skillLocator.special.baseSkill, out var upgradedSpecial))
-                {
-                    if (switchType == SwitchType.Upgrade)
-                    {
-                        skillLocator.special.SetSkillOverride(gameObject, upgradedSpecial, GenericSkill.SkillOverridePriority.Contextual);
-                    }
-                    else
-                    {
-                        skillLocator.special.UnsetSkillOverride(gameObject, upgradedSpecial, GenericSkill.SkillOverridePriority.Contextual);
-                    }
-                }
-                else
-                {
-                    Main.logger.LogError("The One: No suitable secondary skill upgrade was found");
                 }
             }
         }

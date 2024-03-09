@@ -1,4 +1,5 @@
 ﻿using EscanorPaladinSkills.States;
+using EscanorPaladinSkills.States.Upgrades;
 using R2API;
 using RoR2;
 using RoR2.Projectile;
@@ -10,7 +11,7 @@ namespace EscanorPaladinSkills.Projectiles
     public static class CruelSunUpgraded
     {
         public static GameObject prefab;
-        public static DamageAPI.ModdedDamageType barrierOnHit = DamageAPI.ReserveDamageType();
+        public static DamageAPI.ModdedDamageType barrierOnHitWorse = DamageAPI.ReserveDamageType();
 
         public static void Init()
         {
@@ -57,7 +58,7 @@ namespace EscanorPaladinSkills.Projectiles
             for (int i = 0; i < trans.childCount; i++)
             {
                 var child = trans.GetChild(i);
-                child.localScale *= 2.2f;
+                child.localScale *= 3f;
             }
 
             var pointLight = trans.Find("Point Light");
@@ -82,7 +83,7 @@ namespace EscanorPaladinSkills.Projectiles
             var flameBillboardsRenderer = trans.Find("FlameBillboards, Local").GetComponent<ParticleSystemRenderer>();
             flameBillboardsRenderer.mesh = icoSphere;
             flameBillboardsRenderer.renderMode = ParticleSystemRenderMode.Mesh;
-            flameBillboardsRenderer.gameObject.transform.localScale = Vector3.one * 2f;
+            flameBillboardsRenderer.gameObject.transform.localScale = Vector3.one * 3f;
 
             flameBillboardsRenderer.material = newMat;
 
@@ -113,7 +114,7 @@ namespace EscanorPaladinSkills.Projectiles
             projectileDirectionalTargetFinder.flierAltitudeTolerance = Mathf.Infinity;
 
             var holder = prefab.AddComponent<DamageAPI.ModdedDamageTypeHolderComponent>();
-            holder.Add(barrierOnHit);
+            holder.Add(barrierOnHitWorse);
 
             PrefabAPI.RegisterNetworkPrefab(prefab);
             ContentAddition.AddProjectile(prefab);
@@ -129,9 +130,9 @@ namespace EscanorPaladinSkills.Projectiles
                 return;
             }
 
-            if (DamageAPI.HasModdedDamageType(report.damageInfo, barrierOnHit))
+            if (DamageAPI.HasModdedDamageType(report.damageInfo, barrierOnHitWorse))
             {
-                attackerBody.healthComponent.AddBarrierAuthority(attackerBody.healthComponent.fullCombinedHealth * CruelSunState.barrierGain);
+                attackerBody.healthComponent.AddBarrierAuthority(attackerBody.healthComponent.fullCombinedHealth * CruelSunUpgradedState.barrierGain);
             }
         }
     }

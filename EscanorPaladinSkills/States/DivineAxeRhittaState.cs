@@ -114,13 +114,13 @@ namespace EscanorPaladinSkills.States
                 hitEffectPrefab = impact
             };
 
-            Main.logger.LogError("rhitta attack is " + attack);
+            // Main.logger.LogError("rhitta attack is " + attack);
 
             if (isAuthority)
             {
                 if (attack.Fire(null))
                 {
-                    Main.logger.LogError("rhitta attack hit something");
+                    // Main.logger.LogError("rhitta attack hit something");
                     OnHit();
                 }
             }

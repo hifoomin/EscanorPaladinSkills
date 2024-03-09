@@ -31,20 +31,14 @@ namespace EscanorPaladinSkills.Components
             rect.localPosition = Vector3.zero;
             rect.localScale = Vector3.one;
             rect.localEulerAngles = Vector3.zero;
-            var elem = theOneContainer.AddComponent<LayoutElement>();
+            var layoutElement = theOneContainer.AddComponent<LayoutElement>();
 
-            elem.minHeight = 120;
-            elem.preferredWidth = 500;
+            layoutElement.minHeight = 120;
+            layoutElement.preferredWidth = 500;
 
             rect.pivot = new Vector2(1.15f, 0);
             rect.anchoredPosition = rect.pivot;
 
-            //var image = uiContainer.AddComponent<Image>();
-            //image.material = _hud.itemInventoryDisplay.GetComponentInChildren<Image>().material;
-
-            //var textContainer = new GameObject("TextContainer");
-            //textContainer.transform.SetParent(uiContainer.transform);
-            //var textMesh = textContainer.AddComponent<HGTextMeshProUGUI>();
             textMesh = theOneContainer.AddComponent<HGTextMeshProUGUI>();
             textMesh.fontSize = 32;
             textMesh.alignment = TextAlignmentOptions.Center;
@@ -83,11 +77,11 @@ namespace EscanorPaladinSkills.Components
             var transitionTimer = theOneController.transitionTimer;
             var theOneTimer = theOneController.theOneTimer;
 
-            if (transitionTimer >= 60f * theOneController.timeMultiplier || theOneTimer <= 30f)
+            if (transitionTimer >= 60f * theOneController.timeMultiplier)
             {
                 textMesh.color = new Color32(255, 105, 34, 255);
             }
-            else if (transitionTimer <= 30f * theOneController.timeMultiplier || theOneTimer >= 50f)
+            else if (transitionTimer <= 30f * theOneController.timeMultiplier || theOneTimer > 0f)
             {
                 textMesh.color = new Color32(204, 34, 34, 255);
             }

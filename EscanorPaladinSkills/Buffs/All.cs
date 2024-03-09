@@ -76,8 +76,8 @@ namespace EscanorPaladinSkills.Buffs
 
             ContentAddition.AddBuffDef(curse);
 
-            LanguageAPI.Add("KEYWORD_FLEETING", "<style=cKeywordName>Fleeting</style><style=cSub><style=cIsDamage>Attack speed</style> increases <style=cIsDamage>skill damage</style> instead, at <style=cIsDamage66%</style> effectiveness.</style>");
-            LanguageAPI.Add("KEYWORD_CURSED", "<style=cKeywordName>Cursed</style><style=cSub>While not <style=cIsDamage>The One</style>, <style=cDeath>reduce all armor</style> by <style=cDeath>50%</style>, <style=cDeath>maximum health</style> by <style=cDeath>25%</style>, and <style=cDeath>all healing</style> by <style=cDeath>33%</style>.</style>");
+            LanguageAPI.Add("KEYWORD_FLEETING", "<style=cKeywordName>Fleeting</style><style=cSub><style=cIsDamage>Attack speed</style> increases <style=cIsDamage>skill damage</style> instead, at <style=cIsDamage>66%</style> effectiveness.</style>");
+            LanguageAPI.Add("KEYWORD_CURSED", "<style=cKeywordName>Cursed</style><style=cSub>While not <style=cIsDamage>The One</style>, <style=cDeath>reduce all armor</style> by <style=cDeath>40%</style>, <style=cDeath>maximum health</style> by <style=cDeath>20%</style>, and <style=cDeath>all healing</style> by <style=cDeath>25%</style>.</style>");
             LanguageAPI.Add("KEYWORD_THEONE", "<style=cKeywordName>The One</style><style=cSub><style=cIsHealing>Increase armor</style> by <style=cIsHealing>30</style>, <style=cIsHealing>health regeneration</style> by <style=cIsHealing>100%</style>, and <style=cIsDamage>upgrade skills</style> in unique ways.</style>");
 
             RecalculateStatsAPI.GetStatCoefficients += RecalculateStatsAPI_GetStatCoefficients;
@@ -115,7 +115,7 @@ namespace EscanorPaladinSkills.Buffs
 
             if (self.HasBuff(curse))
             {
-                self.armor *= 0.5f;
+                self.armor *= 0.6f;
             }
         }
 
@@ -153,7 +153,7 @@ namespace EscanorPaladinSkills.Buffs
             }
             if (self.body.HasBuff(curse))
             {
-                amount *= 0.66f;
+                amount *= 0.75f;
             }
             return orig(self, amount, procChainMask, nonRegen);
         }
@@ -177,7 +177,7 @@ namespace EscanorPaladinSkills.Buffs
             if (sender.HasBuff(enrage))
             {
                 args.damageMultAdd += 0.75f;
-                args.moveSpeedMultAdd += 0.2f;
+                args.moveSpeedMultAdd += 0.25f;
             }
             if (sender.HasBuff(slow))
             {
@@ -190,7 +190,7 @@ namespace EscanorPaladinSkills.Buffs
             }
             if (sender.HasBuff(curse))
             {
-                args.baseCurseAdd += 0.25f;
+                args.baseCurseAdd += 0.2f;
             }
         }
     }

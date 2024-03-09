@@ -54,13 +54,14 @@ namespace EscanorPaladinSkills
             On.RoR2.BodyCatalog.Init += BodyCatalog_Init;
             Run.onRunStartGlobal += Run_onRunStartGlobal;
 
-            On.RoR2.Networking.NetworkManagerSystemSteam.OnClientConnect += (s, u, t) => { };
+            // On.RoR2.Networking.NetworkManagerSystemSteam.OnClientConnect += (s, u, t) => { };
 
             escanor = AssetBundle.LoadFromFile(Assembly.GetExecutingAssembly().Location.Replace("EscanorPaladinSkills.dll", "escanorpaladinskills"));
 
             Buffs.All.Init();
             VFX.DivineAxeRhitta.Init();
             Overlays.FlameOfLife.Init();
+            Overlays.TheOne.Init();
             Projectiles.CruelSun.Init();
             Projectiles.CruelSunUpgraded.Init();
             VFX.Judgement.Init();
@@ -79,22 +80,12 @@ namespace EscanorPaladinSkills
             paladinBodyIndex = BodyCatalog.FindBodyIndex("RobPaladinBody");
         }
 
-        public void Start()
+        public void Start() // paladin realification happens in start for whatever reason
         {
             TheOneSD.Init();
             DivineAxeRhittaJank.Init();
 
-            var pally = PaladinMod.PaladinPlugin.characterPrefab;
-
-            var networkStateMachine = pally.GetComponent<NetworkStateMachine>();
-
-            var flameESM = pally.AddComponent<EntityStateMachine>();
-            flameESM.customName = "Flame";
-            flameESM.initialStateType = new(typeof(EntityStates.Idle));
-            flameESM.mainStateType = new(typeof(EntityStates.Idle));
-
-            Array.Resize(ref networkStateMachine.stateMachines, networkStateMachine.stateMachines.Length + 1);
-            networkStateMachine.stateMachines[networkStateMachine.stateMachines.Length - 1] = flameESM;
+            AddESM();
 
             IEnumerable<Type> enumerable = from type in Assembly.GetExecutingAssembly().GetTypes()
                                            where !type.IsAbstract && type.IsSubclassOf(typeof(SkillDefBase))
@@ -111,6 +102,33 @@ namespace EscanorPaladinSkills
                 }
             }
 
+            AddStates();
+            AddSkillUpgrades();
+
+            // 1 = primary
+            // 2 = spinning slash m2
+            // 3 =
+
+            Init.SetUpComponents();
+        }
+
+        public void AddESM()
+        {
+            var pally = PaladinMod.PaladinPlugin.characterPrefab;
+
+            var networkStateMachine = pally.GetComponent<NetworkStateMachine>();
+
+            var flameESM = pally.AddComponent<EntityStateMachine>();
+            flameESM.customName = "Flame";
+            flameESM.initialStateType = new(typeof(EntityStates.Idle));
+            flameESM.mainStateType = new(typeof(EntityStates.Idle));
+
+            Array.Resize(ref networkStateMachine.stateMachines, networkStateMachine.stateMachines.Length + 1);
+            networkStateMachine.stateMachines[networkStateMachine.stateMachines.Length - 1] = flameESM;
+        }
+
+        public void AddStates()
+        {
             ContentAddition.AddEntityState(typeof(CruelSunState), out _);
             ContentAddition.AddEntityState(typeof(CruelSunUpgradedState), out _);
             ContentAddition.AddEntityState(typeof(FlameOfLifeState), out _);
@@ -123,105 +141,12 @@ namespace EscanorPaladinSkills
             ContentAddition.AddEntityState(typeof(States.Upgrades.SpinningSlash.SpinningSlashGroundedUpgradedState), out _);
             ContentAddition.AddEntityState(typeof(CruelSunUpgradedState), out _);
             ContentAddition.AddEntityState(typeof(DivineAxeRhittaUpgradedState), out _);
+        }
 
-            // 1 = primary
-            // 2 = spinning slash m2
-            // 3 =
-
+        public void AddSkillUpgrades()
+        {
             originalSecondarySkillDefToSecondarySkillDefUpgradeMap.Add(SunshineCruelSunSD.instance.skillDef, SunshineCruelSunUpgradedSD.instance.skillDef);
             originalSecondarySkillDefToSecondarySkillDefUpgradeMap.Add(PaladinMod.Modules.Skills.skillFamilies[1].variants[0].skillDef, SpinningSlashUpgradedSD.instance.skillDef);
-
-            CharacterBody.onBodyStartGlobal += CharacterBody_onBodyStartGlobal;
-            HUD.shouldHudDisplay += HUD_shouldHudDisplay;
-        }
-
-        private void HUD_shouldHudDisplay(HUD hud, ref bool shouldDisplay)
-        {
-            if (hud.GetComponent<TheOneHUD>() == null)
-                hud.gameObject.AddComponent<TheOneHUD>();
-        }
-
-        private void CharacterBody_onBodyStartGlobal(CharacterBody body)
-        {
-            if (body.bodyIndex != paladinBodyIndex)
-            {
-                return;
-            }
-
-            var passive = body.GetComponents<GenericSkill>().Where(x => x.skillDef.skillNameToken == "PALADIN_THEONE_NAME").FirstOrDefault();
-            if (passive)
-            {
-                if (body.GetComponent<TheOneController>() == null)
-                {
-                    logger.LogError("adding the one controller");
-                    var theOneController = body.gameObject.AddComponent<TheOneController>();
-                    var sceneName = SceneManager.GetActiveScene().name;
-                    var timeMultiplier = sceneName switch
-                    {
-                        "moon" => 1.5f,
-                        "moon2" => 1.75f,
-                        "voidstage" => 0.5f,
-                        "limbo" => 0.1f,
-                        "arena" => 0.75f,
-                        _ => 1f
-                    };
-                    var speed = body.moveSpeed / 7f;
-                    timeMultiplier /= Mathf.Sqrt(speed);
-                    theOneController.GetTransTime(timeMultiplier);
-                }
-            }
-
-            var modelLocator = body.modelLocator;
-            if (!modelLocator)
-            {
-                return;
-            }
-
-            var trans = modelLocator.modelTransform;
-            if (!trans)
-            {
-                return;
-            }
-
-            if (trans.Find("say gex hitbox") != null)
-            {
-                return;
-            }
-
-            GameObject hitBox = new("say gex hitbox");
-            hitBox.transform.parent = trans;
-            hitBox.AddComponent<HitBox>();
-            hitBox.transform.localPosition = new Vector3(0f, 0f, 7f);
-            hitBox.transform.localScale = new Vector3(16f, 20f, 24f);
-            hitBox.transform.localEulerAngles = Vector3.zero;
-            var hitBoxGroup = trans.gameObject.AddComponent<HitBoxGroup>();
-            hitBoxGroup.hitBoxes = new HitBox[] { hitBox.GetComponent<HitBox>() };
-            hitBoxGroup.groupName = "SayGex";
-
-            if (trans.Find("sesbian lex hitbox") != null)
-            {
-                return;
-            }
-
-            GameObject hitBox2 = new("sesbian lex hitbox");
-            hitBox2.transform.parent = trans;
-            hitBox2.AddComponent<HitBox>();
-            hitBox2.transform.localPosition = new Vector3(0f, 0f, 22f);
-            hitBox2.transform.localScale = new Vector3(8f, 4000f, 48f);
-            hitBox2.transform.localEulerAngles = Vector3.zero;
-            var hitBoxGroup2 = trans.gameObject.AddComponent<HitBoxGroup>();
-            hitBoxGroup2.hitBoxes = new HitBox[] { hitBox2.GetComponent<HitBox>() };
-            hitBoxGroup2.groupName = "SesbianLex";
-
-            if (body.GetComponent<SkillLocator>().primary.skillDef.skillNameToken == "PALADIN_DIVINEAXERHITTA_NAME")
-            {
-                var childLocator = trans.GetComponent<ChildLocator>();
-                var lowerArmR = childLocator.transformPairs[35].transform;
-
-                var swordBase = lowerArmR.Find("hand.R/swordBase");
-                var swordSizeController = swordBase.gameObject.AddComponent<SwordSizeController>();
-                swordSizeController.sword = swordBase;
-            }
         }
 
         public bool ValidateSkillDef(SkillDefBase sdb)

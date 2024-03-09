@@ -13,7 +13,7 @@ namespace EscanorPaladinSkills.SkillDefs
 
         public override string ConfigNameText => "Sunfall";
 
-        public override string DescriptionText => "<style=cIsDamage>Fleeting</style>. <style=cDeath>Stun yourself</style> and call down your hand, summoning <style=cIsDamage>20</style> meteors for <style=cIsDamage>300% damage</style> each.";
+        public override string DescriptionText => "<style=cIsDamage>Fleeting</style>. <style=cDeath>Stun yourself</style> and call down your hand, summoning <style=cIsDamage>20</style> meteors for <style=cIsDamage>400% damage</style> each.";
 
         public override SerializableEntityStateType ActivationState => new(typeof(SunfallState));
 
@@ -37,7 +37,7 @@ namespace EscanorPaladinSkills.SkillDefs
 
         public override int RechargeStock => 1;
 
-        public override Sprite Icon => null;
+        public override Sprite Icon => Main.escanor.LoadAsset<Sprite>("texSunshinesCruelSun.png");
 
         public override int StockToConsume => 5;
 

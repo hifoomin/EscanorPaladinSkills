@@ -72,11 +72,11 @@ namespace EscanorPaladinSkills.States
                     {
                         attacker = null,
                         procCoefficient = 0,
-                        damage = healthComponent.fullCombinedHealth * 0.01f,
+                        damage = healthComponent.fullCombinedHealth * 0.007f,
                         crit = false,
                         position = transform.position,
                         damageColorIndex = DamageColorIndex.Fragile,
-                        damageType = DamageType.BypassArmor | DamageType.BypassBlock,
+                        damageType = DamageType.BypassArmor | DamageType.BypassBlock | DamageType.NonLethal,
                         inflictor = null
                     };
 

@@ -13,7 +13,7 @@ namespace EscanorPaladinSkills.SkillDefs
 
         public override string ConfigNameText => "Flame of Life";
 
-        public override string DescriptionText => "<style=cIsUtility>Agile</style>. For the next <style=cIsUtility>7 seconds</style>, become <style=cIsHealing>blessed</style>. All attacks <style=cIsDamage>ignite</style> and deal <style=cIsDamage>75%</style> more damage. Increase <style=cIsUtility>movement speed</style> by <style=cIsUtility>20%</style>. <style=cDeath>Disable all healing and incinerate yourself</style>.";
+        public override string DescriptionText => "<style=cIsUtility>Agile</style>. For the next <style=cIsUtility>7 seconds</style>, become <style=cIsHealing>blessed</style>. All attacks <style=cIsDamage>ignite</style> and deal <style=cIsDamage>75%</style> more damage. Increase <style=cIsUtility>movement speed</style> by <style=cIsUtility>25%</style>. <style=cDeath>Disable all healing and incinerate yourself</style>.";
 
         public override SerializableEntityStateType ActivationState => new(typeof(FlameOfLifeState));
 
@@ -21,7 +21,7 @@ namespace EscanorPaladinSkills.SkillDefs
 
         public override int BaseMaxStock => 1;
 
-        public override float BaseRechargeInterval => 10f;
+        public override float BaseRechargeInterval => 11f;
 
         public override bool BeginSkillCooldownOnSkillEnd => true;
 
@@ -37,7 +37,7 @@ namespace EscanorPaladinSkills.SkillDefs
 
         public override int RechargeStock => 1;
 
-        public override Sprite Icon => null;
+        public override Sprite Icon => Main.escanor.LoadAsset<Sprite>("texFlameOfLife.png");
 
         public override int StockToConsume => 1;
 

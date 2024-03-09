@@ -9,7 +9,7 @@ namespace EscanorPaladinSkills.States
 {
     public class SunfallState : BaseSkillState
     {
-        public static float baseDuration = 4f;
+        public static float baseDuration = 3f;
         public static float duration;
         public bool hasFired = false;
         public bool hasPlayedSound = false;
@@ -35,18 +35,19 @@ namespace EscanorPaladinSkills.States
         public IEnumerator Fire()
         {
             Util.PlaySound("Play_grandParent_attack3_sun_spawn", gameObject);
+            AddRecoil(-4f, -4.5f, -2.75f, 2.75f);
             for (int i = 0; i < 20; i++)
             {
                 yield return new WaitForSeconds(0.06f);
                 aimRay = new Ray(inputBank.aimOrigin + (inputBank.aimDirection * 1f), inputBank.aimDirection);
-                AddRecoil(-1f, -1.5f, -0.75f, 0.75f);
 
                 if (Physics.Raycast(aimRay, out var raycastInfo, 1000f, LayerIndex.CommonMasks.bullet, QueryTriggerInteraction.Ignore))
                 {
+                    AddRecoil(-0.5f, 0.5f, -0.75f, 0.75f);
                     var fpi = new FireProjectileInfo()
                     {
                         crit = RollCrit(),
-                        damage = damageStat * (3f + ((attackSpeedStat - 1f) * 2f)),
+                        damage = damageStat * (4f + ((attackSpeedStat - 1f) * (2f + 2f / 3f))),
                         damageTypeOverride = DamageType.Generic,
                         owner = gameObject,
                         position = raycastInfo.point + new Vector3(Main.rng.RangeFloat(-1.5f * i, 1.5f * i), 45f + Main.rng.RangeFloat(-1.1f * i, 1.1f * i), Main.rng.RangeFloat(-1.51f * i, 1.51f * i)),
@@ -78,10 +79,9 @@ namespace EscanorPaladinSkills.States
                 hasPlayedSound = true;
             }
 
-            if (fixedAge >= 3f && !hasFired)
+            if (fixedAge >= 1.5f && !hasFired)
             {
                 outer.StartCoroutine(Fire());
-                PlayAnimation("FullBody, Override", "BufferEmpty");
 
                 hasFired = true;
             }
@@ -97,6 +97,8 @@ namespace EscanorPaladinSkills.States
         public override void OnExit()
         {
             base.OnExit();
+
+            PlayAnimation("FullBody, Override", "BufferEmpty");
 
             if (characterBody && NetworkServer.active)
             {

@@ -14,7 +14,7 @@ namespace EscanorPaladinSkills.SkillDefs.Upgrades
 
         public override string ConfigNameText => "Sunshines Cruel Quasar";
 
-        public override string DescriptionText => "<style=cIsDamage>Ignite</style>. Hurl a slow, homing <style=cIsDamage>miniature quasar</style> that explodes in an enormous radius for <style=cIsDamage>800%</style> damage. Gain <style=cIsHealing>7.5% barrier</style> for each enemy hit.";
+        public override string DescriptionText => "<style=cIsDamage>Ignite</style>. Hurl a slow, homing <style=cIsDamage>miniature quasar</style> that explodes in an enormous radius for <style=cIsDamage>1000%</style> damage. Gain <style=cIsHealing>5% barrier</style> for each enemy hit.";
 
         public override SerializableEntityStateType ActivationState => new(typeof(CruelSunUpgradedState));
 
@@ -38,7 +38,7 @@ namespace EscanorPaladinSkills.SkillDefs.Upgrades
 
         public override int RechargeStock => 1;
 
-        public override Sprite Icon => null;
+        public override Sprite Icon => Main.escanor.LoadAsset<Sprite>("texSunshinesCruelSun.png");
 
         public override int StockToConsume => 1;
 
