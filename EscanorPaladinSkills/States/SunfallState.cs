@@ -47,7 +47,7 @@ namespace EscanorPaladinSkills.States
                     var fpi = new FireProjectileInfo()
                     {
                         crit = RollCrit(),
-                        damage = damageStat * (4f + ((attackSpeedStat - 1f) * (2f + 2f / 3f))),
+                        damage = damageStat * (3.5f + ((attackSpeedStat - 1f) * (2f + 1f / 3f))),
                         damageTypeOverride = DamageType.Generic,
                         owner = gameObject,
                         position = raycastInfo.point + new Vector3(Main.rng.RangeFloat(-1.5f * i, 1.5f * i), 45f + Main.rng.RangeFloat(-1.1f * i, 1.1f * i), Main.rng.RangeFloat(-1.51f * i, 1.51f * i)),

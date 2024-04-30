@@ -53,7 +53,7 @@ namespace EscanorPaladinSkills.SkillDefs
             theOneDef.skillNameToken = "PALADIN_THEONE_NAME";
             (theOneDef as ScriptableObject).name = "PALADIN_THEONE_NAME";
             theOneDef.skillDescriptionToken = "PALADIN_THEONE_DESCRIPTION";
-            theOneDef.icon = Main.escanor.LoadAsset<Sprite>("texTheOne.png");
+            theOneDef.icon = Main.escanor.LoadAsset<Sprite>("texTheOne3.png");
             theOneDef.keywordTokens = new string[] { "KEYWORD_CURSED", "KEYWORD_THEONE" };
             theOneDef.baseRechargeInterval = 0f;
             theOneDef.activationStateMachineName = "Body";

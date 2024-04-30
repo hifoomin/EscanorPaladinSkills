@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace EscanorPaladinSkills.SkillDefs
 {
-    public class SunshineCruelSunSD : SkillDefBase<SunshineCruelSunSD>
+    public class CruelSunSD : SkillDefBase<CruelSunSD>
     {
         public override string NameToken => "SUNSHINECRUELSUN";
 
@@ -13,7 +13,7 @@ namespace EscanorPaladinSkills.SkillDefs
 
         public override string ConfigNameText => "Sunshines Cruel Sun";
 
-        public override string DescriptionText => "<style=cIsDamage>Ignite</style>. Hurl a slow, homing <style=cIsDamage>miniature sun</style> that explodes in a large radius for <style=cIsDamage>800%</style> damage. Gain <style=cIsHealing>7.5% barrier</style> for each enemy hit.";
+        public override string DescriptionText => "<style=cIsDamage>Ignite</style>. Hurl a slow, homing <style=cIsDamage>miniature sun</style> that explodes in a large radius for <style=cIsDamage>700%</style> damage. Gain <style=cIsHealing>6% barrier</style> for each enemy hit.";
 
         public override SerializableEntityStateType ActivationState => new(typeof(CruelSunState));
 
@@ -37,7 +37,7 @@ namespace EscanorPaladinSkills.SkillDefs
 
         public override int RechargeStock => 1;
 
-        public override Sprite Icon => Main.escanor.LoadAsset<Sprite>("texSunshinesCruelSun.png");
+        public override Sprite Icon => Main.escanor.LoadAsset<Sprite>("texSunshinesCruelSun3.png");
 
         public override int StockToConsume => 1;
 

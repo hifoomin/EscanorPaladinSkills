@@ -14,7 +14,7 @@ namespace EscanorPaladinSkills.States
         public Ray aimRay;
         public bool hasFired = false;
         public bool hasPlayedSound = false;
-        public static float barrierGain = 0.075f;
+        public static float barrierGain = 0.06f;
 
         public override void OnEnter()
         {
@@ -72,7 +72,7 @@ namespace EscanorPaladinSkills.States
             var fpi = new FireProjectileInfo()
             {
                 crit = RollCrit(),
-                damage = damageStat * 8f,
+                damage = damageStat * 7f,
                 damageTypeOverride = DamageType.IgniteOnHit,
                 owner = gameObject,
                 position = characterBody.corePosition + new Vector3(0f, 4f, 0f),

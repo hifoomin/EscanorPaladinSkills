@@ -12,7 +12,7 @@ namespace EscanorPaladinSkills.Components
 
         public void Start()
         {
-            idealSwordSize = Vector3.one * 1.5f;
+            idealSwordSize = Vector3.one * Main.swordScale.Value;
         }
 
         public void LateUpdate()

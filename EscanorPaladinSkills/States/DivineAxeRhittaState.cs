@@ -137,7 +137,8 @@ namespace EscanorPaladinSkills.States
                     SmallHop(characterMotor, 6f);
                 }
 
-                if (skillLocator.utility.skillDef.skillNameToken == "PALADIN_UTILITY_DASH_NAME") skillLocator.utility.RunRecharge(1f);
+                // if (skillLocator.utility.skillDef.skillNameToken == "PALADIN_UTILITY_DASH_NAME") skillLocator.utility.RunRecharge(1f);
+                // too op also I don't want the meta loadout to be real again
 
                 hasHopped = true;
             }

@@ -18,6 +18,7 @@ using EscanorPaladinSkills.States.Upgrades;
 using UnityEngine.SceneManagement;
 using RoR2.UI;
 using UnityEngine.Networking;
+using BepInEx.Configuration;
 
 namespace EscanorPaladinSkills
 {
@@ -47,12 +48,16 @@ namespace EscanorPaladinSkills
 
         public static Xoroshiro128Plus rng;
 
+        public static ConfigEntry<float> swordScale { get; set; }
+
         public void Awake()
         {
             logger = base.Logger;
 
             On.RoR2.BodyCatalog.Init += BodyCatalog_Init;
             Run.onRunStartGlobal += Run_onRunStartGlobal;
+
+            swordScale = Config.Bind("Silly", "Sword Scale Multiplier", 1.5f, "Only works with Divine Axe Rhitta as your M1");
 
             // On.RoR2.Networking.NetworkManagerSystemSteam.OnClientConnect += (s, u, t) => { };
 
@@ -96,6 +101,12 @@ namespace EscanorPaladinSkills
             foreach (Type type in enumerable)
             {
                 SkillDefBase based = (SkillDefBase)Activator.CreateInstance(type);
+                if (based.Add == false)
+                {
+                    based.Init();
+                    return;
+                }
+
                 if (ValidateSkillDef(based))
                 {
                     based.Init();
@@ -107,7 +118,7 @@ namespace EscanorPaladinSkills
 
             // 1 = primary
             // 2 = spinning slash m2
-            // 3 =
+            // 3 = sunlight spear m2
 
             Init.SetUpComponents();
         }
@@ -141,12 +152,14 @@ namespace EscanorPaladinSkills
             ContentAddition.AddEntityState(typeof(States.Upgrades.SpinningSlash.SpinningSlashGroundedUpgradedState), out _);
             ContentAddition.AddEntityState(typeof(CruelSunUpgradedState), out _);
             ContentAddition.AddEntityState(typeof(DivineAxeRhittaUpgradedState), out _);
+            // ContentAddition.AddEntityState(typeof(SunlightSpearUpgradedState), out _);
         }
 
         public void AddSkillUpgrades()
         {
-            originalSecondarySkillDefToSecondarySkillDefUpgradeMap.Add(SunshineCruelSunSD.instance.skillDef, SunshineCruelSunUpgradedSD.instance.skillDef);
+            originalSecondarySkillDefToSecondarySkillDefUpgradeMap.Add(CruelSunSD.instance.skillDef, CruelSunUpgradedSD.instance.skillDef);
             originalSecondarySkillDefToSecondarySkillDefUpgradeMap.Add(PaladinMod.Modules.Skills.skillFamilies[1].variants[0].skillDef, SpinningSlashUpgradedSD.instance.skillDef);
+            // originalSecondarySkillDefToSecondarySkillDefUpgradeMap.Add(PaladinMod.Modules.Skills.skillFamilies[1].variants[1].skillDef, SunlightSpearUpgradedSD.instance.skillDef);
         }
 
         public bool ValidateSkillDef(SkillDefBase sdb)

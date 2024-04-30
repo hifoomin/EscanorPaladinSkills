@@ -66,8 +66,10 @@ namespace EscanorPaladinSkills.Projectiles
             flameTrailsRenderer.gameObject.transform.localScale = Vector3.one * 0.566666666f;
 
             var newMat = Object.Instantiate(Addressables.LoadAssetAsync<Material>("RoR2/Base/Common/VFX/matOmniExplosion1.mat").WaitForCompletion());
-            newMat.SetTexture("_RemapTex", Addressables.LoadAssetAsync<Texture2D>("RoR2/DLC1/Common/ColorRamps/texRampConstructLaserTypeB.png").WaitForCompletion());
-            newMat.SetFloat("_AlphaBoost", 1f);
+            newMat.SetTexture("_RemapTex", Addressables.LoadAssetAsync<Texture2D>("RoR2/Base/Common/ColorRamps/texRampTritoneSmoothed.png").WaitForCompletion());
+            newMat.SetFloat("_Boost", 4.078308f);
+            newMat.SetFloat("_AlphaBoost", 1.062106f);
+            newMat.SetFloat("_AlphaBias", 0f);
 
             flameTrailsRenderer.material = newMat;
 

@@ -25,7 +25,7 @@ namespace EscanorPaladinSkills.VFX
             swingTrail.localScale = Vector3.one * 4f;
 
             var newMat = Object.Instantiate(PaladinMod.Modules.Assets.mainAssetBundle.LoadAsset<Material>("matPaladinSwing3"));
-            newMat.SetColor("_Color", new Color32(255, 127, 0, 255));
+            newMat.SetColor("_Color", new Color32(255, 0, 74, 255));
             newMat.SetColor("_EmissionColor", new Color32(255, 144, 0, 255));
             newMat.SetFloat("_Cutoff", 0.12f);
             newMat.SetFloat("_BlendOp", 4);

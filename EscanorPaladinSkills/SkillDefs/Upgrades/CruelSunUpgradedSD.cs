@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace EscanorPaladinSkills.SkillDefs.Upgrades
 {
-    public class SunshineCruelSunUpgradedSD : SkillDefBase<SunshineCruelSunUpgradedSD>
+    public class CruelSunUpgradedSD : SkillDefBase<CruelSunUpgradedSD>
     {
         public override string NameToken => "SUNSHINECRUELSUNUPGRADED";
 
@@ -38,7 +38,7 @@ namespace EscanorPaladinSkills.SkillDefs.Upgrades
 
         public override int RechargeStock => 1;
 
-        public override Sprite Icon => Main.escanor.LoadAsset<Sprite>("texSunshinesCruelSun.png");
+        public override Sprite Icon => Main.escanor.LoadAsset<Sprite>("texSunshinesCruelSun3Upgraded.png");
 
         public override int StockToConsume => 1;
 

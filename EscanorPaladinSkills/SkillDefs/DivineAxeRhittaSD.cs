@@ -37,7 +37,7 @@ namespace EscanorPaladinSkills.SkillDefs
 
         public override int RechargeStock => 0;
 
-        public override Sprite Icon => Main.escanor.LoadAsset<Sprite>("texDivineAxeRhitta.png");
+        public override Sprite Icon => Main.escanor.LoadAsset<Sprite>("texDivineAxeRhitta4.png");
 
         public override int StockToConsume => 0;
 

@@ -60,6 +60,8 @@ namespace EscanorPaladinSkills.States
 
                     if (characterBody && NetworkServer.active)
                     {
+                        if (characterBody.HasBuff(Buffs.All.healingRemoval))
+                            characterBody.RemoveBuff(Buffs.All.healingRemoval);
                         characterBody.AddBuff(Buffs.All.healingRemoval);
                         characterBody.AddBuff(Buffs.All.enrage);
                     }
@@ -105,6 +107,7 @@ namespace EscanorPaladinSkills.States
             {
                 characterBody.RemoveBuff(Buffs.All.healingRemoval);
                 characterBody.RemoveBuff(Buffs.All.enrage);
+                characterBody.AddTimedBuff(Buffs.All.healingRemoval, 2f);
             }
         }
     }
