@@ -60,10 +60,10 @@ namespace EscanorPaladinSkills.States
 
                     if (characterBody && NetworkServer.active)
                     {
-                        if (characterBody.HasBuff(Buffs.All.healingRemoval))
-                            characterBody.RemoveBuff(Buffs.All.healingRemoval);
-                        characterBody.AddBuff(Buffs.All.healingRemoval);
-                        characterBody.AddBuff(Buffs.All.enrage);
+                        if (characterBody.HasBuff(Buffs.All.flameOfLifeHealingDebuff))
+                            characterBody.RemoveBuff(Buffs.All.flameOfLifeHealingDebuff);
+                        characterBody.AddBuff(Buffs.All.flameOfLifeHealingDebuff);
+                        characterBody.AddBuff(Buffs.All.flameOfLifeBuff);
                     }
                     hasAddedStuff = true;
                 }
@@ -105,9 +105,9 @@ namespace EscanorPaladinSkills.States
             Util.PlaySound("Stop_item_use_hellfire_loop", gameObject);
             if (characterBody && NetworkServer.active)
             {
-                characterBody.RemoveBuff(Buffs.All.healingRemoval);
-                characterBody.RemoveBuff(Buffs.All.enrage);
-                characterBody.AddTimedBuff(Buffs.All.healingRemoval, 2f);
+                characterBody.RemoveBuff(Buffs.All.flameOfLifeHealingDebuff);
+                characterBody.RemoveBuff(Buffs.All.flameOfLifeBuff);
+                characterBody.AddTimedBuff(Buffs.All.flameOfLifeHealingDebuff, 2f);
             }
         }
     }

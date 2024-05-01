@@ -6,10 +6,11 @@ using System.Linq;
 
 namespace EscanorPaladinSkills.Components
 {
-    public static class Init
+    public class Init
     {
         public static void SetUpComponents()
         {
+            // Main.logger.LogError("setting up components");
             CharacterBody.onBodyStartGlobal += CharacterBody_onBodyStartGlobal;
             HUD.shouldHudDisplay += HUD_shouldHudDisplay;
         }
@@ -22,10 +23,12 @@ namespace EscanorPaladinSkills.Components
 
         public static void CharacterBody_onBodyStartGlobal(CharacterBody body)
         {
-            if (body.bodyIndex != Main.paladinBodyIndex)
+            if (body.name != "RobPaladinBody(Clone)")
             {
                 return;
             }
+
+            // Main.logger.LogError("found paladin body");
 
             var passive = body.GetComponents<GenericSkill>().Where(x => x.skillDef.skillNameToken == "PALADIN_THEONE_NAME").FirstOrDefault();
             if (passive)
@@ -79,16 +82,20 @@ namespace EscanorPaladinSkills.Components
 
             if (body.GetComponent<SkillLocator>().primary.skillDef.skillNameToken == "PALADIN_DIVINEAXERHITTA_NAME")
             {
+                // Main.logger.LogError("m1 is divine axe rhitta");
                 var childLocator = trans.GetComponent<ChildLocator>();
                 var transformPairs = childLocator.transformPairs;
                 if (transformPairs.Length > 36)
                 {
+                    // Main.logger.LogError("transform pairs has more than 36 elements");
                     var lowerArmR = childLocator.transformPairs[35].transform;
                     if (lowerArmR)
                     {
+                        // Main.logger.LogError("lower arm r exists");
                         var swordBase = lowerArmR.Find("hand.R/swordBase");
                         if (swordBase)
                         {
+                            // Main.logger.LogError("sword base exists");
                             var swordSizeController = swordBase.gameObject.AddComponent<SwordSizeController>();
                             swordSizeController.sword = swordBase;
                         }

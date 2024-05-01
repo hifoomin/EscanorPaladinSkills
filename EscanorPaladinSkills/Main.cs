@@ -44,8 +44,6 @@ namespace EscanorPaladinSkills
         public static Dictionary<SkillDef, SkillDef> originalUtilitySkillDefToUtilitySkillDefUpgradeMap = new();
         public static Dictionary<SkillDef, SkillDef> originalSpecialSkillDefToSpecialSkillDefUpgradeMap = new();
 
-        public static BodyIndex paladinBodyIndex;
-
         public static Xoroshiro128Plus rng;
 
         public static ConfigEntry<float> swordScale { get; set; }
@@ -54,7 +52,6 @@ namespace EscanorPaladinSkills
         {
             logger = base.Logger;
 
-            On.RoR2.BodyCatalog.Init += BodyCatalog_Init;
             Run.onRunStartGlobal += Run_onRunStartGlobal;
 
             swordScale = Config.Bind("Silly", "Sword Scale Multiplier", 1.5f, "Only works with Divine Axe Rhitta as your M1");
@@ -72,17 +69,13 @@ namespace EscanorPaladinSkills
             VFX.Judgement.Init();
             Projectiles.Judgement.Init();
             Projectiles.Sunfall.Init();
+
+            Init.SetUpComponents();
         }
 
         private void Run_onRunStartGlobal(Run run)
         {
             rng = new Xoroshiro128Plus(RoR2Application.rng.nextUlong);
-        }
-
-        private void BodyCatalog_Init(On.RoR2.BodyCatalog.orig_Init orig)
-        {
-            orig();
-            paladinBodyIndex = BodyCatalog.FindBodyIndex("RobPaladinBody");
         }
 
         public void Start() // paladin realification happens in start for whatever reason
@@ -104,7 +97,7 @@ namespace EscanorPaladinSkills
                 if (based.Add == false)
                 {
                     based.Init();
-                    return;
+                    continue;
                 }
 
                 if (ValidateSkillDef(based))
@@ -119,8 +112,6 @@ namespace EscanorPaladinSkills
             // 1 = primary
             // 2 = spinning slash m2
             // 3 = sunlight spear m2
-
-            Init.SetUpComponents();
         }
 
         public void AddESM()

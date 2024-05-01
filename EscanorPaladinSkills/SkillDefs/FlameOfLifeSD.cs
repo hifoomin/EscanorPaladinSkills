@@ -13,7 +13,7 @@ namespace EscanorPaladinSkills.SkillDefs
 
         public override string ConfigNameText => "Flame of Life";
 
-        public override string DescriptionText => "<style=cIsUtility>Agile</style>. For the next <style=cIsUtility>7 seconds</style>, become <style=cIsHealing>blessed</style>. All attacks <style=cIsDamage>ignite</style> and deal <style=cIsDamage>75%</style> more damage. Increase <style=cIsUtility>movement speed</style> by <style=cIsUtility>25%</style>. <style=cDeath>Disable all healing and incinerate yourself</style>.";
+        public override string DescriptionText => "<style=cIsUtility>Agile</style>. For the next <style=cIsUtility>7 seconds</style>, become <style=cIsHealing>blessed</style>. All attacks <style=cIsDamage>ignite</style> and deal <style=cIsDamage>60%</style> more damage. Increase <style=cIsUtility>movement speed</style> by <style=cIsUtility>25%</style>. <style=cDeath>Disable all healing and incinerate yourself</style>.";
 
         public override SerializableEntityStateType ActivationState => new(typeof(FlameOfLifeState));
 

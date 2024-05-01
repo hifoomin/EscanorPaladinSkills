@@ -15,7 +15,7 @@ namespace EscanorPaladinSkills.Components
     [DisallowMultipleComponent]
     public class TheOneController : MonoBehaviour
     {
-        public float[] transitionTimes;
+        public float transitionTime;
         public float transitionTimer = 0f;
         public float chosenTransitionTimer = 0f;
         public bool shouldRunTransitionTimer = false;
@@ -39,13 +39,9 @@ namespace EscanorPaladinSkills.Components
             modelLocator = GetComponent<ModelLocator>();
             modelTransform = modelLocator.modelTransform;
 
-            theOneBuff = Buffs.All.theOne;
-            curseBuff = Buffs.All.curse;
-            transitionTimes = new float[4];
-            transitionTimes[0] = 160f * timeScalar;
-            transitionTimes[1] = 180f * timeScalar;
-            transitionTimes[2] = 200f * timeScalar;
-            transitionTimes[3] = 215f * timeScalar;
+            theOneBuff = Buffs.All.theOneBuff;
+            curseBuff = Buffs.All.theOneCurseDebuff;
+            chosenTransitionTimer = 240f * timeScalar;
             timeMultiplier = timeScalar;
 
             if (Run.instance)
@@ -55,7 +51,6 @@ namespace EscanorPaladinSkills.Components
                     body.AddBuff(curseBuff);
                 }
 
-                chosenTransitionTimer = transitionTimes[Main.rng.RangeInt(0, transitionTimes.Length)];
                 transitionTimer = chosenTransitionTimer;
                 shouldRunTransitionTimer = true;
 
@@ -106,49 +101,14 @@ namespace EscanorPaladinSkills.Components
                     }
                     if (!body.HasBuff(theOneBuff))
                     {
-                        if (body.hasAuthority)
-                        {
-                            if (Main.originalPrimarySkillDefToPrimarySkillDefUpgradeMap.TryGetValue(skillLocator.primary.baseSkill, out var upgradedPrimary))
-                            {
-                                skillLocator.primary.SetSkillOverride(gameObject, upgradedPrimary, GenericSkill.SkillOverridePriority.Contextual);
-                            }
-                            else
-                            {
-                                Main.logger.LogError("The One: No suitable primary skill upgrade was found");
-                            }
-
-                            if (Main.originalSecondarySkillDefToSecondarySkillDefUpgradeMap.TryGetValue(skillLocator.secondary.baseSkill, out var upgradedSecondary))
-                            {
-                                skillLocator.secondary.SetSkillOverride(gameObject, upgradedSecondary, GenericSkill.SkillOverridePriority.Contextual);
-                            }
-                            else
-                            {
-                                Main.logger.LogError("The One: No suitable secondary skill upgrade was found");
-                            }
-
-                            if (Main.originalUtilitySkillDefToUtilitySkillDefUpgradeMap.TryGetValue(skillLocator.utility.baseSkill, out var upgradedUtility))
-                            {
-                                skillLocator.utility.SetSkillOverride(gameObject, upgradedUtility, GenericSkill.SkillOverridePriority.Contextual);
-                            }
-                            else
-                            {
-                                Main.logger.LogError("The One: No suitable secondary skill upgrade was found");
-                            }
-
-                            if (Main.originalSpecialSkillDefToSpecialSkillDefUpgradeMap.TryGetValue(skillLocator.special.baseSkill, out var upgradedSpecial))
-                            {
-                                skillLocator.special.SetSkillOverride(gameObject, upgradedSpecial, GenericSkill.SkillOverridePriority.Contextual);
-                            }
-                            else
-                            {
-                                Main.logger.LogError("The One: No suitable secondary skill upgrade was found");
-                            }
-                        }
+                        UpgradeSkills();
 
                         Util.PlaySound("Play_lemurian_fireball_impact", gameObject);
                         Util.PlaySound("Play_lemurian_fireball_impact", gameObject);
                         Util.PlaySound("Play_lemurian_fireball_impact", gameObject);
                         Util.PlaySound("Play_moonBrother_orb_slam_impact", gameObject);
+
+                        // EffectManager.SpawnEffect()
 
                         if (NetworkServer.active)
                         {
@@ -170,44 +130,7 @@ namespace EscanorPaladinSkills.Components
                     }
                     if (body.HasBuff(theOneBuff))
                     {
-                        if (body.hasAuthority)
-                        {
-                            if (Main.originalPrimarySkillDefToPrimarySkillDefUpgradeMap.TryGetValue(skillLocator.primary.baseSkill, out var upgradedPrimary))
-                            {
-                                skillLocator.primary.UnsetSkillOverride(gameObject, upgradedPrimary, GenericSkill.SkillOverridePriority.Contextual);
-                            }
-                            else
-                            {
-                                Main.logger.LogError("The One: No suitable primary skill upgrade was found");
-                            }
-
-                            if (Main.originalSecondarySkillDefToSecondarySkillDefUpgradeMap.TryGetValue(skillLocator.secondary.baseSkill, out var upgradedSecondary))
-                            {
-                                skillLocator.secondary.UnsetSkillOverride(gameObject, upgradedSecondary, GenericSkill.SkillOverridePriority.Contextual);
-                            }
-                            else
-                            {
-                                Main.logger.LogError("The One: No suitable secondary skill upgrade was found");
-                            }
-
-                            if (Main.originalUtilitySkillDefToUtilitySkillDefUpgradeMap.TryGetValue(skillLocator.utility.baseSkill, out var upgradedUtility))
-                            {
-                                skillLocator.utility.UnsetSkillOverride(gameObject, upgradedUtility, GenericSkill.SkillOverridePriority.Contextual);
-                            }
-                            else
-                            {
-                                Main.logger.LogError("The One: No suitable secondary skill upgrade was found");
-                            }
-
-                            if (Main.originalSpecialSkillDefToSpecialSkillDefUpgradeMap.TryGetValue(skillLocator.special.baseSkill, out var upgradedSpecial))
-                            {
-                                skillLocator.special.UnsetSkillOverride(gameObject, upgradedSpecial, GenericSkill.SkillOverridePriority.Contextual);
-                            }
-                            else
-                            {
-                                Main.logger.LogError("The One: No suitable secondary skill upgrade was found");
-                            }
-                        }
+                        RevertSkills();
 
                         if (NetworkServer.active)
                         {
@@ -216,6 +139,74 @@ namespace EscanorPaladinSkills.Components
                     }
                     theOneTimer = -999f;
                     shouldRunTheOneTimer = false;
+                }
+            }
+        }
+
+        public void UpgradeSkills()
+        {
+            if (body.hasAuthority)
+            {
+                if (Main.originalPrimarySkillDefToPrimarySkillDefUpgradeMap.TryGetValue(skillLocator.primary.baseSkill, out var upgradedPrimary))
+                {
+                    skillLocator.primary.SetSkillOverride(gameObject, upgradedPrimary, GenericSkill.SkillOverridePriority.Contextual);
+                }
+                else
+                {
+                    Main.logger.LogError("The One: No suitable primary skill upgrade was found");
+                }
+
+                if (Main.originalSecondarySkillDefToSecondarySkillDefUpgradeMap.TryGetValue(skillLocator.secondary.baseSkill, out var upgradedSecondary))
+                {
+                    skillLocator.secondary.SetSkillOverride(gameObject, upgradedSecondary, GenericSkill.SkillOverridePriority.Contextual);
+                }
+                else
+                {
+                    Main.logger.LogError("The One: No suitable secondary skill upgrade was found");
+                }
+
+                if (Main.originalUtilitySkillDefToUtilitySkillDefUpgradeMap.TryGetValue(skillLocator.utility.baseSkill, out var upgradedUtility))
+                {
+                    skillLocator.utility.SetSkillOverride(gameObject, upgradedUtility, GenericSkill.SkillOverridePriority.Contextual);
+                }
+                else
+                {
+                    Main.logger.LogError("The One: No suitable utility skill upgrade was found");
+                }
+
+                if (Main.originalSpecialSkillDefToSpecialSkillDefUpgradeMap.TryGetValue(skillLocator.special.baseSkill, out var upgradedSpecial))
+                {
+                    skillLocator.special.SetSkillOverride(gameObject, upgradedSpecial, GenericSkill.SkillOverridePriority.Contextual);
+                }
+                else
+                {
+                    Main.logger.LogError("The One: No suitable special skill upgrade was found");
+                }
+            }
+        }
+
+        public void RevertSkills()
+        {
+            if (body.hasAuthority)
+            {
+                if (Main.originalPrimarySkillDefToPrimarySkillDefUpgradeMap.TryGetValue(skillLocator.primary.baseSkill, out var upgradedPrimary))
+                {
+                    skillLocator.primary.UnsetSkillOverride(gameObject, upgradedPrimary, GenericSkill.SkillOverridePriority.Contextual);
+                }
+
+                if (Main.originalSecondarySkillDefToSecondarySkillDefUpgradeMap.TryGetValue(skillLocator.secondary.baseSkill, out var upgradedSecondary))
+                {
+                    skillLocator.secondary.UnsetSkillOverride(gameObject, upgradedSecondary, GenericSkill.SkillOverridePriority.Contextual);
+                }
+
+                if (Main.originalUtilitySkillDefToUtilitySkillDefUpgradeMap.TryGetValue(skillLocator.utility.baseSkill, out var upgradedUtility))
+                {
+                    skillLocator.utility.UnsetSkillOverride(gameObject, upgradedUtility, GenericSkill.SkillOverridePriority.Contextual);
+                }
+
+                if (Main.originalSpecialSkillDefToSpecialSkillDefUpgradeMap.TryGetValue(skillLocator.special.baseSkill, out var upgradedSpecial))
+                {
+                    skillLocator.special.UnsetSkillOverride(gameObject, upgradedSpecial, GenericSkill.SkillOverridePriority.Contextual);
                 }
             }
         }

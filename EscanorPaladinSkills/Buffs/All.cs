@@ -13,68 +13,68 @@ namespace EscanorPaladinSkills.Buffs
 {
     public static class All
     {
-        public static BuffDef healingRemoval;
-        public static BuffDef enrage;
-        public static BuffDef slow;
-        public static BuffDef theOne;
-        public static BuffDef curse;
+        public static BuffDef flameOfLifeHealingDebuff;
+        public static BuffDef flameOfLifeBuff;
+        public static BuffDef sunfallStunDebuff;
+        public static BuffDef theOneBuff;
+        public static BuffDef theOneCurseDebuff;
 
         public static void Init()
         {
-            healingRemoval = ScriptableObject.CreateInstance<BuffDef>();
-            healingRemoval.isDebuff = false;
-            healingRemoval.isCooldown = false;
-            healingRemoval.canStack = false;
-            healingRemoval.buffColor = new Color32(246, 119, 32, 255);
-            healingRemoval.iconSprite = Main.escanor.LoadAsset<Sprite>("texBuffFucked.png");
-            healingRemoval.isHidden = false;
-            healingRemoval.name = "Flame of Life Healing Removal";
+            flameOfLifeHealingDebuff = ScriptableObject.CreateInstance<BuffDef>();
+            flameOfLifeHealingDebuff.isDebuff = false;
+            flameOfLifeHealingDebuff.isCooldown = false;
+            flameOfLifeHealingDebuff.canStack = false;
+            flameOfLifeHealingDebuff.buffColor = new Color32(246, 119, 32, 255);
+            flameOfLifeHealingDebuff.iconSprite = Main.escanor.LoadAsset<Sprite>("texBuffFucked.png");
+            flameOfLifeHealingDebuff.isHidden = false;
+            flameOfLifeHealingDebuff.name = "Flame of Life Healing Removal";
 
-            ContentAddition.AddBuffDef(healingRemoval);
+            ContentAddition.AddBuffDef(flameOfLifeHealingDebuff);
 
-            enrage = ScriptableObject.CreateInstance<BuffDef>();
-            enrage.isDebuff = false;
-            enrage.isCooldown = false;
-            enrage.canStack = false;
-            enrage.buffColor = new Color32(246, 119, 32, 255);
-            enrage.iconSprite = Main.escanor.LoadAsset<Sprite>("texBuffEnraged.png");
-            enrage.isHidden = false;
-            enrage.name = "Flame of Life Enrage";
+            flameOfLifeBuff = ScriptableObject.CreateInstance<BuffDef>();
+            flameOfLifeBuff.isDebuff = false;
+            flameOfLifeBuff.isCooldown = false;
+            flameOfLifeBuff.canStack = false;
+            flameOfLifeBuff.buffColor = new Color32(246, 119, 32, 255);
+            flameOfLifeBuff.iconSprite = Main.escanor.LoadAsset<Sprite>("texBuffEnraged.png");
+            flameOfLifeBuff.isHidden = false;
+            flameOfLifeBuff.name = "Flame of Life Enrage";
 
-            ContentAddition.AddBuffDef(enrage);
+            ContentAddition.AddBuffDef(flameOfLifeBuff);
 
-            slow = ScriptableObject.CreateInstance<BuffDef>();
-            slow.isDebuff = false;
-            slow.isCooldown = false;
-            slow.canStack = false;
-            slow.buffColor = new Color32(246, 119, 32, 255);
-            slow.iconSprite = Addressables.LoadAssetAsync<BuffDef>("RoR2/Base/Common/bdSlow50.asset").WaitForCompletion().iconSprite;
-            slow.isHidden = false;
-            slow.name = "Sunfall Slow";
+            sunfallStunDebuff = ScriptableObject.CreateInstance<BuffDef>();
+            sunfallStunDebuff.isDebuff = false;
+            sunfallStunDebuff.isCooldown = false;
+            sunfallStunDebuff.canStack = false;
+            sunfallStunDebuff.buffColor = new Color32(246, 119, 32, 255);
+            sunfallStunDebuff.iconSprite = Addressables.LoadAssetAsync<BuffDef>("RoR2/Base/Common/bdSlow50.asset").WaitForCompletion().iconSprite;
+            sunfallStunDebuff.isHidden = false;
+            sunfallStunDebuff.name = "Sunfall Slow";
 
-            ContentAddition.AddBuffDef(slow);
+            ContentAddition.AddBuffDef(sunfallStunDebuff);
 
-            theOne = ScriptableObject.CreateInstance<BuffDef>();
-            theOne.isDebuff = false;
-            theOne.isCooldown = false;
-            theOne.canStack = false;
-            theOne.buffColor = new Color32(255, 0, 0, 255);
-            theOne.iconSprite = Main.escanor.LoadAsset<Sprite>("texBuffEnraged.png");
-            theOne.isHidden = false;
-            theOne.name = "The One Blessing";
+            theOneBuff = ScriptableObject.CreateInstance<BuffDef>();
+            theOneBuff.isDebuff = false;
+            theOneBuff.isCooldown = false;
+            theOneBuff.canStack = false;
+            theOneBuff.buffColor = new Color32(255, 0, 0, 255);
+            theOneBuff.iconSprite = Main.escanor.LoadAsset<Sprite>("texBuffEnraged.png");
+            theOneBuff.isHidden = false;
+            theOneBuff.name = "The One Blessing";
 
-            ContentAddition.AddBuffDef(theOne);
+            ContentAddition.AddBuffDef(theOneBuff);
 
-            curse = ScriptableObject.CreateInstance<BuffDef>();
-            curse.isDebuff = false;
-            curse.isCooldown = false;
-            curse.canStack = false;
-            curse.buffColor = Color.gray;
-            curse.iconSprite = Main.escanor.LoadAsset<Sprite>("texBuffFucked.png");
-            curse.isHidden = false;
-            curse.name = "The One Curse";
+            theOneCurseDebuff = ScriptableObject.CreateInstance<BuffDef>();
+            theOneCurseDebuff.isDebuff = false;
+            theOneCurseDebuff.isCooldown = false;
+            theOneCurseDebuff.canStack = false;
+            theOneCurseDebuff.buffColor = Color.gray;
+            theOneCurseDebuff.iconSprite = Main.escanor.LoadAsset<Sprite>("texBuffFucked.png");
+            theOneCurseDebuff.isHidden = false;
+            theOneCurseDebuff.name = "The One Curse";
 
-            ContentAddition.AddBuffDef(curse);
+            ContentAddition.AddBuffDef(theOneCurseDebuff);
 
             LanguageAPI.Add("KEYWORD_FLEETING", "<style=cKeywordName>Fleeting</style><style=cSub><style=cIsDamage>Attack speed</style> increases <style=cIsDamage>skill damage</style> instead, at <style=cIsDamage>66%</style> effectiveness.</style>");
             LanguageAPI.Add("KEYWORD_CURSED", "<style=cKeywordName>Cursed</style><style=cSub>While not <style=cIsDamage>The One</style>, <style=cDeath>reduce all armor</style> by <style=cDeath>40%</style>, <style=cDeath>maximum health</style> by <style=cDeath>20%</style>, and <style=cDeath>all healing</style> by <style=cDeath>25%</style>.</style>");
@@ -91,14 +91,14 @@ namespace EscanorPaladinSkills.Buffs
 
         private static void CharacterBody_FixedUpdate(On.RoR2.CharacterBody.orig_FixedUpdate orig, CharacterBody self)
         {
-            if (self.HasBuff(enrage))
+            if (self.HasBuff(flameOfLifeBuff))
             {
                 self.healthComponent.barrier = Mathf.Max(Mathf.Epsilon, self.healthComponent.barrier);
             }
 
             orig(self);
 
-            if (self.HasBuff(enrage))
+            if (self.HasBuff(flameOfLifeBuff))
             {
                 self.healthComponent.barrier = Mathf.Max(Mathf.Epsilon, self.healthComponent.barrier);
             }
@@ -113,7 +113,7 @@ namespace EscanorPaladinSkills.Buffs
         {
             orig(self);
 
-            if (self.HasBuff(curse))
+            if (self.HasBuff(theOneCurseDebuff))
             {
                 self.armor *= 0.6f;
             }
@@ -131,7 +131,7 @@ namespace EscanorPaladinSkills.Buffs
                 c.EmitDelegate<Func<bool, GenericCharacterMain, bool>>((orig, self) =>
                 {
                     var body = self.characterBody;
-                    if (body && body.HasBuff(slow))
+                    if (body && body.HasBuff(sunfallStunDebuff))
                     {
                         return false;
                     }
@@ -147,11 +147,11 @@ namespace EscanorPaladinSkills.Buffs
 
         private static float HealthComponent_Heal(On.RoR2.HealthComponent.orig_Heal orig, HealthComponent self, float amount, ProcChainMask procChainMask, bool nonRegen)
         {
-            if (self.body.HasBuff(healingRemoval))
+            if (self.body.HasBuff(flameOfLifeHealingDebuff))
             {
                 amount = 0;
             }
-            if (self.body.HasBuff(curse))
+            if (self.body.HasBuff(theOneCurseDebuff))
             {
                 amount *= 0.75f;
             }
@@ -166,7 +166,7 @@ namespace EscanorPaladinSkills.Buffs
                 return;
             }
 
-            if (attackerBody.HasBuff(enrage))
+            if (attackerBody.HasBuff(flameOfLifeBuff))
             {
                 report.damageInfo.damageType |= DamageType.IgniteOnHit;
             }
@@ -174,21 +174,21 @@ namespace EscanorPaladinSkills.Buffs
 
         private static void RecalculateStatsAPI_GetStatCoefficients(CharacterBody sender, RecalculateStatsAPI.StatHookEventArgs args)
         {
-            if (sender.HasBuff(enrage))
+            if (sender.HasBuff(flameOfLifeBuff))
             {
-                args.damageMultAdd += 0.75f;
+                args.damageMultAdd += 0.6f;
                 args.moveSpeedMultAdd += 0.25f;
             }
-            if (sender.HasBuff(slow))
+            if (sender.HasBuff(sunfallStunDebuff))
             {
                 args.moveSpeedRootCount += 1; // 1 - (1/(1+'1')) = 0.5
             }
-            if (sender.HasBuff(theOne))
+            if (sender.HasBuff(theOneBuff))
             {
                 args.armorAdd += 30f;
                 args.regenMultAdd += 1f;
             }
-            if (sender.HasBuff(curse))
+            if (sender.HasBuff(theOneCurseDebuff))
             {
                 args.baseCurseAdd += 0.2f;
             }

@@ -59,7 +59,7 @@ namespace EscanorPaladinSkills.Components
 
             body = hud.targetMaster.GetBody();
 
-            if (body && body.bodyIndex == Main.paladinBodyIndex)
+            if (body && body.name == "RobPaladinBody(Clone)")
             {
                 theOneController = body.GetComponent<TheOneController>();
             }

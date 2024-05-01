@@ -28,7 +28,7 @@ namespace EscanorPaladinSkills.States
 
             if (characterBody && NetworkServer.active)
             {
-                characterBody.AddBuff(Buffs.All.slow);
+                characterBody.AddBuff(Buffs.All.sunfallStunDebuff);
             }
         }
 
@@ -102,7 +102,7 @@ namespace EscanorPaladinSkills.States
 
             if (characterBody && NetworkServer.active)
             {
-                characterBody.RemoveBuff(Buffs.All.slow);
+                characterBody.RemoveBuff(Buffs.All.sunfallStunDebuff);
             }
         }
     }
