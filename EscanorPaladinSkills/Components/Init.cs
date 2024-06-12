@@ -12,13 +12,13 @@ namespace EscanorPaladinSkills.Components
         {
             // Main.logger.LogError("setting up components");
             CharacterBody.onBodyStartGlobal += CharacterBody_onBodyStartGlobal;
-            HUD.shouldHudDisplay += HUD_shouldHudDisplay;
+            // HUD.shouldHudDisplay += HUD_shouldHudDisplay;
         }
 
         public static void HUD_shouldHudDisplay(HUD hud, ref bool shouldDisplay)
         {
-            if (hud.GetComponent<TheOneHUD>() == null)
-                hud.gameObject.AddComponent<TheOneHUD>();
+            // if (hud.GetComponent<TheOneHUD>() == null)
+            // hud.gameObject.AddComponent<TheOneHUD>();
         }
 
         public static void CharacterBody_onBodyStartGlobal(CharacterBody body)
@@ -29,7 +29,7 @@ namespace EscanorPaladinSkills.Components
             }
 
             // Main.logger.LogError("found paladin body");
-
+            /*
             var passive = body.GetComponents<GenericSkill>().Where(x => x.skillDef.skillNameToken == "PALADIN_THEONE_NAME").FirstOrDefault();
             if (passive)
             {
@@ -52,6 +52,7 @@ namespace EscanorPaladinSkills.Components
                     theOneController.GetTransTime(timeMultiplier);
                 }
             }
+            */
 
             var modelLocator = body.modelLocator;
             if (!modelLocator)

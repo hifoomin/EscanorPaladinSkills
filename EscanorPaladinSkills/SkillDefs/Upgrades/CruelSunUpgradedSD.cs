@@ -1,4 +1,5 @@
-﻿using EntityStates;
+﻿/*
+using EntityStates;
 using EscanorPaladinSkills.States;
 using EscanorPaladinSkills.States.Upgrades;
 using RoR2;
@@ -55,3 +56,4 @@ namespace EscanorPaladinSkills.SkillDefs.Upgrades
         public override bool Add => false;
     }
 }
+*/

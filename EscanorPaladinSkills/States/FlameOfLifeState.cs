@@ -34,7 +34,7 @@ namespace EscanorPaladinSkills.States
         public override void FixedUpdate()
         {
             base.FixedUpdate();
-            timer += Time.fixedDeltaTime;
+            // timer += Time.fixedDeltaTime;
             if (fixedAge >= castAnimationDuration)
             {
                 if (!hasAddedStuff)
@@ -67,7 +67,7 @@ namespace EscanorPaladinSkills.States
                     }
                     hasAddedStuff = true;
                 }
-
+                /*
                 if (timer >= interval)
                 {
                     DamageInfo info = new()
@@ -89,6 +89,7 @@ namespace EscanorPaladinSkills.States
 
                     timer = 0f;
                 }
+                */
             }
             if (fixedAge < baseDuration + castAnimationDuration || !isAuthority)
             {

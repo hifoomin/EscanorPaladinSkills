@@ -13,12 +13,14 @@ using EscanorPaladinSkills.VFX;
 using EscanorPaladinSkills.SkillDefs;
 using EscanorPaladinSkills.Components;
 using RoR2.Skills;
-using EscanorPaladinSkills.SkillDefs.Upgrades;
+
+// using EscanorPaladinSkills.SkillDefs.Upgrades;
 using EscanorPaladinSkills.States.Upgrades;
 using UnityEngine.SceneManagement;
 using RoR2.UI;
 using UnityEngine.Networking;
 using BepInEx.Configuration;
+using EscanorPaladinSkills.States.Upgrades.SunlightSpear;
 
 namespace EscanorPaladinSkills
 {
@@ -39,10 +41,10 @@ namespace EscanorPaladinSkills
 
         public static ManualLogSource logger;
 
-        public static Dictionary<SkillDef, SkillDef> originalPrimarySkillDefToPrimarySkillDefUpgradeMap = new();
-        public static Dictionary<SkillDef, SkillDef> originalSecondarySkillDefToSecondarySkillDefUpgradeMap = new();
-        public static Dictionary<SkillDef, SkillDef> originalUtilitySkillDefToUtilitySkillDefUpgradeMap = new();
-        public static Dictionary<SkillDef, SkillDef> originalSpecialSkillDefToSpecialSkillDefUpgradeMap = new();
+        // public static Dictionary<SkillDef, SkillDef> originalPrimarySkillDefToPrimarySkillDefUpgradeMap = new();
+        // public static Dictionary<SkillDef, SkillDef> originalSecondarySkillDefToSecondarySkillDefUpgradeMap = new();
+        // public static Dictionary<SkillDef, SkillDef> originalUtilitySkillDefToUtilitySkillDefUpgradeMap = new();
+        // public static Dictionary<SkillDef, SkillDef> originalSpecialSkillDefToSpecialSkillDefUpgradeMap = new();
 
         public static Xoroshiro128Plus rng;
 
@@ -80,7 +82,8 @@ namespace EscanorPaladinSkills
 
         public void Start() // paladin realification happens in start for whatever reason
         {
-            TheOneSD.Init();
+            Projectiles.SunlightSpearUpgraded.Init();
+            // TheOneSD.Init();
             DivineAxeRhittaJank.Init();
 
             AddESM();
@@ -143,13 +146,14 @@ namespace EscanorPaladinSkills
             ContentAddition.AddEntityState(typeof(States.Upgrades.SpinningSlash.SpinningSlashGroundedUpgradedState), out _);
             ContentAddition.AddEntityState(typeof(CruelSunUpgradedState), out _);
             ContentAddition.AddEntityState(typeof(DivineAxeRhittaUpgradedState), out _);
-            // ContentAddition.AddEntityState(typeof(SunlightSpearUpgradedState), out _);
+            ContentAddition.AddEntityState(typeof(ChargeSunlightSpearUpgradedState), out _);
+            ContentAddition.AddEntityState(typeof(ThrowSunlightSpearUpgradedState), out _);
         }
 
         public void AddSkillUpgrades()
         {
-            originalSecondarySkillDefToSecondarySkillDefUpgradeMap.Add(CruelSunSD.instance.skillDef, CruelSunUpgradedSD.instance.skillDef);
-            originalSecondarySkillDefToSecondarySkillDefUpgradeMap.Add(PaladinMod.Modules.Skills.skillFamilies[1].variants[0].skillDef, SpinningSlashUpgradedSD.instance.skillDef);
+            // originalSecondarySkillDefToSecondarySkillDefUpgradeMap.Add(CruelSunSD.instance.skillDef, CruelSunUpgradedSD.instance.skillDef);
+            // originalSecondarySkillDefToSecondarySkillDefUpgradeMap.Add(PaladinMod.Modules.Skills.skillFamilies[1].variants[0].skillDef, SpinningSlashUpgradedSD.instance.skillDef);
             // originalSecondarySkillDefToSecondarySkillDefUpgradeMap.Add(PaladinMod.Modules.Skills.skillFamilies[1].variants[1].skillDef, SunlightSpearUpgradedSD.instance.skillDef);
         }
 

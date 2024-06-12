@@ -1,6 +1,6 @@
 ﻿/*
 using EntityStates;
-using EscanorPaladinSkills.States.Upgrades;
+using EscanorPaladinSkills.States.Upgrades.SunlightSpear;
 using RoR2;
 using UnityEngine;
 
@@ -14,9 +14,9 @@ namespace EscanorPaladinSkills.SkillDefs.Upgrades
 
         public override string ConfigNameText => "Molten Spear";
 
-        public override string DescriptionText => "<style=cIsUtility>Shocking</style>. <style=cIsUtility>Agile</style>. Charge up and throw a <style=cIsUtility>lightning bolt</style>, dealing up to <style=cIsDamage>700% damage</style> and firing out <style=cIsDamage>7</style> thunderbolts for <style=cIsDamage>200%</style> damage each. <style=cIsDamage>Throw at your feet</style> to coat your blade in <style=cIsDamage>lightning</style> for <style=cIsUtility>4 seconds</style>.";
+        public override string DescriptionText => "<style=cIsUtility>Shocking</style>. <style=cIsUtility>Agile</style>. Charge up and throw a <style=cIsUtility>lightning bolt</style>, dealing up to <style=cIsDamage>800% damage</style> and firing out <style=cIsDamage>7</style> firebolts for <style=cIsDamage>200%</style> damage each. <style=cIsDamage>Throw at your feet</style> to coat your blade in <style=cIsDamage>lightning</style> for <style=cIsUtility>4 seconds</style>.";
 
-        public override SerializableEntityStateType ActivationState => new(typeof(SunlightSpearUpgradedState));
+        public override SerializableEntityStateType ActivationState => new(typeof(ChargeSunlightSpearUpgradedState));
 
         public override string ActivationStateMachineName => "Weapon";
 
@@ -38,7 +38,7 @@ namespace EscanorPaladinSkills.SkillDefs.Upgrades
 
         public override int RechargeStock => 1;
 
-        public override Sprite Icon => Main.escanor.LoadAsset<Sprite>("texSunshinesCruelSun3Upgraded.png");
+        public override Sprite Icon => Main.escanor.LoadAsset<Sprite>("texSunlightSpearUpgraded.png");
 
         public override int StockToConsume => 1;
 

@@ -1,5 +1,4 @@
-﻿/*
-using PaladinMod.Modules;
+﻿using PaladinMod.Modules;
 using PaladinMod;
 using R2API;
 using RoR2;
@@ -16,7 +15,7 @@ namespace EscanorPaladinSkills.Projectiles
     public static class SunlightSpearUpgraded
     {
         public static GameObject prefab;
-        public static GameObject boltPrefab;
+        public static GameObject fireballPrefab;
 
         public static void Init()
         {
@@ -52,17 +51,18 @@ namespace EscanorPaladinSkills.Projectiles
             PrefabAPI.RegisterNetworkPrefab(prefab);
             ContentAddition.AddProjectile(prefab);
 
-            boltPrefab = PrefabAPI.InstantiateClone(Addressables.LoadAssetAsync<GameObject>("RoR2/Base/ElectricWorm/ElectricWormSeekerProjectile.prefab").WaitForCompletion(), "Molten Spear Bolt");
+            fireballPrefab = PrefabAPI.InstantiateClone(Addressables.LoadAssetAsync<GameObject>("RoR2/Base/MagmaWorm/MagmaOrbProjectile.prefab").WaitForCompletion(), "Molten Spear Fireball");
 
-            var projectileSimple = boltPrefab.GetComponent<ProjectileSimple>();
+            var projectileSimple = fireballPrefab.GetComponent<ProjectileSimple>();
             projectileSimple.lifetime = 8f;
             projectileSimple.desiredForwardSpeed = 60f;
 
-            var projectileImpactExplosion = boltPrefab.GetComponent<ProjectileImpactExplosion>();
-            projectileImpactExplosion.blastRadius = 6f;
+            var projectileImpactExplosion = fireballPrefab.GetComponent<ProjectileImpactExplosion>();
+            projectileImpactExplosion.blastRadius = 9f;
+            projectileImpactExplosion.falloffModel = BlastAttack.FalloffModel.None;
 
-            PrefabAPI.RegisterNetworkPrefab(boltPrefab);
-            ContentAddition.AddProjectile(boltPrefab);
+            PrefabAPI.RegisterNetworkPrefab(fireballPrefab);
+            ContentAddition.AddProjectile(fireballPrefab);
         }
 
         public class FuckOnHit : MonoBehaviour, IProjectileImpactBehavior
@@ -77,8 +77,8 @@ namespace EscanorPaladinSkills.Projectiles
                 if (owner)
                 {
                     ownerBody = owner.GetComponent<CharacterBody>();
-                    Main.logger.LogError("owner is " + owner);
-                    Main.logger.LogError("owner body is " + ownerBody);
+                    // Main.logger.LogError("owner is " + owner);
+                    // Main.logger.LogError("owner body is " + ownerBody);
                 }
             }
 
@@ -89,25 +89,28 @@ namespace EscanorPaladinSkills.Projectiles
 
             public IEnumerator FireFuckingFuckingProjectiles(ProjectileImpactInfo impactInfo)
             {
-                for (int i = 1; i < 8; i++)
+                var count = 8;
+                var slice = 360f / count;
+                var normalized = Vector3.ProjectOnPlane(Random.onUnitSphere, Vector3.up).normalized;
+                for (int i = 1; i < count; i++)
                 {
+                    var rotation = Quaternion.AngleAxis(slice * i, Vector3.up) * normalized;
                     var fpi = new FireProjectileInfo()
                     {
                         crit = ownerBody.RollCrit(),
                         damage = ownerBody.damage * 2f,
                         force = 1000f,
                         owner = ownerBody.gameObject,
-                        projectilePrefab = boltPrefab,
-                        position = impactInfo.estimatedPointOfImpact,
-                        rotation = Util.QuaternionSafeLookRotation(new Vector3(1f / i, 1f, 1f / i)),
+                        projectilePrefab = fireballPrefab,
+                        position = impactInfo.estimatedPointOfImpact + Vector3.up * 5f,
+                        rotation = Util.QuaternionSafeLookRotation(rotation),
                     };
 
                     ProjectileManager.instance.FireProjectile(fpi);
 
-                    yield return new WaitForSeconds(0.5f / i);
+                    yield return new WaitForSeconds(1f / i);
                 }
             }
         }
     }
 }
-*/

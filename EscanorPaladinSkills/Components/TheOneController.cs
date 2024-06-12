@@ -1,4 +1,5 @@
-﻿using EscanorPaladinSkills.SkillDefs;
+﻿/*
+using EscanorPaladinSkills.SkillDefs;
 using EscanorPaladinSkills.SkillDefs.Upgrades;
 using RoR2;
 using RoR2.Skills;
@@ -68,7 +69,7 @@ namespace EscanorPaladinSkills.Components
                     var overlay1 = modelTransform.gameObject.AddComponent<TemporaryOverlay>();
                     overlay1.duration = chosenTransitionTimer + 50f;
                     overlay1.animateShaderAlpha = true;
-                    overlay1.alphaCurve = new AnimationCurve(new Keyframe(0f, 0f), new Keyframe(overlay1PreTransition, 0.1f), new Keyframe(overlay1JustTransitioning, 0.4f), new Keyframe(overlay1JustTransitioning + Mathf.Epsilon, 1f), new Keyframe(overlay1StoppingTransition, 1f), new Keyframe(1f, 0f));
+                    overlay1.alphaCurve = new AnimationCurve(new Keyframe(0f, 0f), new Keyframe(overlay1PreTransition, 0.1f), new Keyframe(overlay1JustTransitioning, 0.3f), new Keyframe(overlay1JustTransitioning + Mathf.Epsilon, 1f), new Keyframe(overlay1StoppingTransition, 1f), new Keyframe(1f, 0f));
                     overlay1.destroyComponentOnEnd = true;
                     overlay1.originalMaterial = Overlays.TheOne.prefab1;
                     overlay1.AddToCharacerModel(modelTransform.GetComponent<CharacterModel>());
@@ -76,7 +77,7 @@ namespace EscanorPaladinSkills.Components
                     var overlay2 = modelTransform.gameObject.AddComponent<TemporaryOverlay>();
                     overlay2.duration = chosenTransitionTimer + 60f;
                     overlay2.animateShaderAlpha = true;
-                    overlay2.alphaCurve = new AnimationCurve(new Keyframe(0f, 0f), new Keyframe(overlay2PreTransition, 0.1f), new Keyframe(overlay2JustTransitioning, 0.4f), new Keyframe(overlay2JustTransitioning + Mathf.Epsilon, 1f), new Keyframe(overlay2StoppingTransition, 1f), new Keyframe(1f, 0f));
+                    overlay2.alphaCurve = new AnimationCurve(new Keyframe(0f, 0f), new Keyframe(overlay2PreTransition, 0.1f), new Keyframe(overlay2JustTransitioning, 0.3f), new Keyframe(overlay2JustTransitioning + Mathf.Epsilon, 1f), new Keyframe(overlay2StoppingTransition, 1f), new Keyframe(1f, 0f));
                     overlay2.destroyComponentOnEnd = true;
                     overlay2.originalMaterial = Overlays.TheOne.prefab2;
                     overlay2.AddToCharacerModel(modelTransform.GetComponent<CharacterModel>());
@@ -212,3 +213,4 @@ namespace EscanorPaladinSkills.Components
         }
     }
 }
+*/

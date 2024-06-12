@@ -10,7 +10,6 @@ namespace EscanorPaladinSkills.States
     public class SunfallState : BaseSkillState
     {
         public static float baseDuration = 3f;
-        public static float duration;
         public bool hasFired = false;
         public bool hasPlayedSound = false;
         public Ray aimRay;
@@ -24,7 +23,8 @@ namespace EscanorPaladinSkills.States
             Util.PlaySound("PaladinCloth1", gameObject);
             Util.PlayAttackSpeedSound("Play_loader_m1_swing", gameObject, 0.5f);
 
-            PlayAnimation("FullBody, Override", "PointDown", "Emote.playbackRate", 3f);
+            // PlayAnimation("FullBody, Override", "PointDown", "Emote.playbackRate", 3f);
+            PlayAnimation("Gesture, Override", "ThrowSpell", "Spell.playbackRate", baseDuration);
 
             if (characterBody && NetworkServer.active)
             {
@@ -98,7 +98,7 @@ namespace EscanorPaladinSkills.States
         {
             base.OnExit();
 
-            PlayAnimation("FullBody, Override", "BufferEmpty");
+            // PlayAnimation("FullBody, Override", "BufferEmpty");
 
             if (characterBody && NetworkServer.active)
             {
