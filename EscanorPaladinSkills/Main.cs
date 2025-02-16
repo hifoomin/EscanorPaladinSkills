@@ -12,15 +12,12 @@ using EscanorPaladinSkills.States;
 using EscanorPaladinSkills.VFX;
 using EscanorPaladinSkills.SkillDefs;
 using EscanorPaladinSkills.Components;
-using RoR2.Skills;
 
 // using EscanorPaladinSkills.SkillDefs.Upgrades;
-using EscanorPaladinSkills.States.Upgrades;
-using UnityEngine.SceneManagement;
-using RoR2.UI;
-using UnityEngine.Networking;
+// using EscanorPaladinSkills.States.Upgrades;
 using BepInEx.Configuration;
-using EscanorPaladinSkills.States.Upgrades.SunlightSpear;
+
+// using EscanorPaladinSkills.States.Upgrades.SunlightSpear;
 
 namespace EscanorPaladinSkills
 {
@@ -28,6 +25,8 @@ namespace EscanorPaladinSkills
     [BepInDependency(LanguageAPI.PluginGUID)]
     [BepInDependency(PrefabAPI.PluginGUID)]
     [BepInDependency(R2APIContentManager.PluginGUID)]
+    [BepInDependency(DamageAPI.PluginGUID)]
+    [BepInDependency(RecalculateStatsAPI.PluginGUID)]
     [BepInDependency("com.rob.Paladin", BepInDependency.DependencyFlags.HardDependency)]
     public class Main : BaseUnityPlugin
     {
@@ -35,7 +34,7 @@ namespace EscanorPaladinSkills
 
         public const string PluginAuthor = "HIFU";
         public const string PluginName = "EscanorPaladinSkills";
-        public const string PluginVersion = "1.0.0";
+        public const string PluginVersion = "1.1.0";
 
         public static AssetBundle escanor;
 
@@ -67,7 +66,7 @@ namespace EscanorPaladinSkills
             Overlays.FlameOfLife.Init();
             Overlays.TheOne.Init();
             Projectiles.CruelSun.Init();
-            Projectiles.CruelSunUpgraded.Init();
+            // Projectiles.CruelSunUpgraded.Init();
             VFX.Judgement.Init();
             Projectiles.Judgement.Init();
             Projectiles.Sunfall.Init();
@@ -82,7 +81,7 @@ namespace EscanorPaladinSkills
 
         public void Start() // paladin realification happens in start for whatever reason
         {
-            Projectiles.SunlightSpearUpgraded.Init();
+            // Projectiles.SunlightSpearUpgraded.Init();
             // TheOneSD.Init();
             DivineAxeRhittaJank.Init();
 
@@ -135,19 +134,19 @@ namespace EscanorPaladinSkills
         public void AddStates()
         {
             ContentAddition.AddEntityState(typeof(CruelSunState), out _);
-            ContentAddition.AddEntityState(typeof(CruelSunUpgradedState), out _);
+            // ContentAddition.AddEntityState(typeof(CruelSunUpgradedState), out _);
             ContentAddition.AddEntityState(typeof(FlameOfLifeState), out _);
             ContentAddition.AddEntityState(typeof(DivineAxeRhittaState), out _);
             ContentAddition.AddEntityState(typeof(SunfallState), out _);
-            ContentAddition.AddEntityState(typeof(States.Upgrades.SpinningSlash.SpinningSlashAirborneAltUpgradedState), out _);
-            ContentAddition.AddEntityState(typeof(States.Upgrades.SpinningSlash.SpinningSlashAirborneUpgradedState), out _);
-            ContentAddition.AddEntityState(typeof(States.Upgrades.SpinningSlash.SpinningSlashEntryUpgradedState), out _);
-            ContentAddition.AddEntityState(typeof(States.Upgrades.SpinningSlash.SpinningSlashGroundedAltUpgradedState), out _);
-            ContentAddition.AddEntityState(typeof(States.Upgrades.SpinningSlash.SpinningSlashGroundedUpgradedState), out _);
-            ContentAddition.AddEntityState(typeof(CruelSunUpgradedState), out _);
-            ContentAddition.AddEntityState(typeof(DivineAxeRhittaUpgradedState), out _);
-            ContentAddition.AddEntityState(typeof(ChargeSunlightSpearUpgradedState), out _);
-            ContentAddition.AddEntityState(typeof(ThrowSunlightSpearUpgradedState), out _);
+            // ContentAddition.AddEntityState(typeof(States.Upgrades.SpinningSlash.SpinningSlashAirborneAltUpgradedState), out _);
+            // ContentAddition.AddEntityState(typeof(States.Upgrades.SpinningSlash.SpinningSlashAirborneUpgradedState), out _);
+            // ContentAddition.AddEntityState(typeof(States.Upgrades.SpinningSlash.SpinningSlashEntryUpgradedState), out _);
+            // ContentAddition.AddEntityState(typeof(States.Upgrades.SpinningSlash.SpinningSlashGroundedAltUpgradedState), out _);
+            // ContentAddition.AddEntityState(typeof(States.Upgrades.SpinningSlash.SpinningSlashGroundedUpgradedState), out _);
+            // ContentAddition.AddEntityState(typeof(CruelSunUpgradedState), out _);
+            // ContentAddition.AddEntityState(typeof(DivineAxeRhittaUpgradedState), out _);
+            // ContentAddition.AddEntityState(typeof(ChargeSunlightSpearUpgradedState), out _);
+            // ContentAddition.AddEntityState(typeof(ThrowSunlightSpearUpgradedState), out _);
         }
 
         public void AddSkillUpgrades()

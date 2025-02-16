@@ -1,4 +1,5 @@
-﻿using EntityStates;
+﻿/*
+using EntityStates;
 using PaladinMod.States;
 using System;
 using System.Collections.Generic;
@@ -23,3 +24,4 @@ namespace EscanorPaladinSkills.States.Upgrades.SpinningSlash
         }
     }
 }
+*/

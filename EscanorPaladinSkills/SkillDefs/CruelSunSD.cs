@@ -7,7 +7,7 @@ namespace EscanorPaladinSkills.SkillDefs
 {
     public class CruelSunSD : SkillDefBase<CruelSunSD>
     {
-        public override string NameToken => "SUNSHINECRUELSUN";
+        public override string NameToken => "SUNSHINES_CRUEL_SUN";
 
         public override string NameText => "Sunshine's Cruel Sun";
 

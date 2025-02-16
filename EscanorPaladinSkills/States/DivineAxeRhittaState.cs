@@ -52,25 +52,17 @@ namespace EscanorPaladinSkills.States
             */
             Util.PlaySound("PaladinCloth2", gameObject);
 
-            var swing = "Slash" + (1 + swingIndex);
+            string animString = "Slash" + (1 + swingIndex).ToString();
+
             if (inCombo)
             {
-                var standingStill = !animator.GetBool("isMoving") && animator.GetBool("isGrounded");
-
-                if (standingStill)
-                {
-                    PlayCrossfade("FullBody, Override", "SlashCombo1", "Slash.playbackRate", baseDuration, 0.05f);
-                }
-                PlayCrossfade("Gesture, Override", "SlashCombo1", "Slash.playbackRate", baseDuration, 0.05f);
+                animString = "SlashCombo1";
             }
-            else
+
+            PlayCrossfade("Gesture, Override", animString, "Slash.playbackRate", baseDuration, 0.05f * baseDuration);
+            if (!animator.GetBool("isMoving") && animator.GetBool("isGrounded"))
             {
-                var movingGrounded = !animator.GetBool("isMoving") && animator.GetBool("isGrounded");
-                if (movingGrounded)
-                {
-                    PlayCrossfade("FullBody, Override", swing, "Slash.playbackRate", baseDuration, 0.05f);
-                }
-                PlayCrossfade("Gesture, Override", swing, "Slash.playbackRate", baseDuration, 0.05f);
+                base.PlayCrossfade("FullBody, Override", animString, "Slash.playbackRate", baseDuration, 0.05f * baseDuration);
             }
         }
 
@@ -111,7 +103,8 @@ namespace EscanorPaladinSkills.States
                 teamIndex = TeamComponent.GetObjectTeam(gameObject),
                 forceVector = Vector3.zero,
                 hitBoxGroup = hitBoxGroup,
-                hitEffectPrefab = impact
+                hitEffectPrefab = impact,
+                damageType = DamageTypeCombo.GenericPrimary
             };
 
             // Main.logger.LogError("rhitta attack is " + attack);

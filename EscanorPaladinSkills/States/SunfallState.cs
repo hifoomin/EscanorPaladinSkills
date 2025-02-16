@@ -24,7 +24,7 @@ namespace EscanorPaladinSkills.States
             Util.PlayAttackSpeedSound("Play_loader_m1_swing", gameObject, 0.5f);
 
             // PlayAnimation("FullBody, Override", "PointDown", "Emote.playbackRate", 3f);
-            PlayAnimation("Gesture, Override", "ThrowSpell", "Spell.playbackRate", baseDuration);
+            PlayAnimation("Gesture, Override", "CastSun", "Spell.playbackRate", baseDuration);
 
             if (characterBody && NetworkServer.active)
             {
@@ -48,7 +48,7 @@ namespace EscanorPaladinSkills.States
                     {
                         crit = RollCrit(),
                         damage = damageStat * (3.5f + ((attackSpeedStat - 1f) * (2f + 1f / 3f))),
-                        damageTypeOverride = DamageType.Generic,
+                        damageTypeOverride = DamageTypeCombo.GenericSpecial,
                         owner = gameObject,
                         position = raycastInfo.point + new Vector3(Main.rng.RangeFloat(-1.5f * i, 1.5f * i), 45f + Main.rng.RangeFloat(-1.1f * i, 1.1f * i), Main.rng.RangeFloat(-1.51f * i, 1.51f * i)),
                         rotation = Util.QuaternionSafeLookRotation(new Vector3(Main.rng.RangeFloat(0f, 0.02f * i), -1f, Main.rng.RangeFloat(0f, 0.021f * i))),
@@ -97,6 +97,8 @@ namespace EscanorPaladinSkills.States
         public override void OnExit()
         {
             base.OnExit();
+
+            PlayAnimation("Gesture, Override", "ThrowSpell", "Spell.playbackRate", 0.5f);
 
             // PlayAnimation("FullBody, Override", "BufferEmpty");
 

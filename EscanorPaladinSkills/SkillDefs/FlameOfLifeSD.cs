@@ -7,7 +7,7 @@ namespace EscanorPaladinSkills.SkillDefs
 {
     public class FlameOfLifeSD : SkillDefBase<FlameOfLifeSD>
     {
-        public override string NameToken => "FLAMEOFLIFE";
+        public override string NameToken => "FLAME_OF_LIFE";
 
         public override string NameText => "Flame of Life";
 

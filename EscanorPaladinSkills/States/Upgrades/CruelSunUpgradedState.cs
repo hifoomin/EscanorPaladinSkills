@@ -1,4 +1,5 @@
-﻿using EntityStates;
+﻿/*
+using EntityStates;
 using EscanorPaladinSkills.Projectiles;
 using RoR2;
 using RoR2.Projectile;
@@ -42,13 +43,12 @@ namespace EscanorPaladinSkills.States.Upgrades
         public override void FixedUpdate()
         {
             base.FixedUpdate();
-            /*
-            if (fixedAge >= duration / 2f && !hasPlayedSound)
+
+            // if (fixedAge >= duration / 2f && !hasPlayedSound)
             {
-                Util.PlaySound(PaladinMod.Modules.Sounds.MenuSound, gameObject);
-                hasPlayedSound = true;
-            }
-            */
+                // Util.PlaySound(PaladinMod.Modules.Sounds.MenuSound, gameObject);
+                // hasPlayedSound = true;
+            // }
 
             if (fixedAge < duration || !isAuthority)
             {
@@ -89,3 +89,4 @@ namespace EscanorPaladinSkills.States.Upgrades
         }
     }
 }
+*/

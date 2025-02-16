@@ -112,9 +112,6 @@ namespace EscanorPaladinSkills.Projectiles
             projectileDirectionalTargetFinder.ignoreAir = false;
             projectileDirectionalTargetFinder.flierAltitudeTolerance = Mathf.Infinity;
 
-            var holder = prefab.AddComponent<DamageAPI.ModdedDamageTypeHolderComponent>();
-            holder.Add(barrierOnHit);
-
             PrefabAPI.RegisterNetworkPrefab(prefab);
             ContentAddition.AddProjectile(prefab);
 

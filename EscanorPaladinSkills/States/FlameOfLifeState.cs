@@ -21,7 +21,7 @@ namespace EscanorPaladinSkills.States
             modelTransform = GetModelTransform();
 
             // PlayAnimation("Gesture, Override", "ChargeSpell", "Spell.playbackRate", castAnimationDuration);
-            PlayAnimation("FullBody, Override", "RageEnter", "Rage.playbackRate", 1.75f);
+            PlayAnimation("Gesture, Override", "LimitBreak", "Rage.playbackRate", 1f);
             Util.PlaySound("PaladinCastTorpor", gameObject);
             Util.PlaySound("Play_item_use_hellfire_start", gameObject);
         }
@@ -41,21 +41,33 @@ namespace EscanorPaladinSkills.States
                 {
                     if (modelTransform)
                     {
-                        var overlay1 = modelTransform.gameObject.AddComponent<TemporaryOverlay>();
+                        var overlay1 = TemporaryOverlayManager.AddOverlay(modelTransform.gameObject);
                         overlay1.duration = baseDuration + 0.5f;
                         overlay1.animateShaderAlpha = true;
                         overlay1.alphaCurve = new AnimationCurve(new Keyframe(0f, 1f), new Keyframe(0.07f, 1f), new Keyframe(0.9f, 1f), new Keyframe(1f, 0f));
                         overlay1.destroyComponentOnEnd = true;
                         overlay1.originalMaterial = Overlays.FlameOfLife.prefab1;
-                        overlay1.AddToCharacerModel(modelTransform.GetComponent<CharacterModel>());
+                        overlay1.inspectorCharacterModel = modelTransform.GetComponent<CharacterModel>();
 
-                        var overlay2 = modelTransform.gameObject.AddComponent<TemporaryOverlay>();
+                        var overlay2 = TemporaryOverlayManager.AddOverlay(modelTransform.gameObject);
                         overlay2.duration = baseDuration + 1.5f;
                         overlay2.animateShaderAlpha = true;
                         overlay2.alphaCurve = new AnimationCurve(new Keyframe(0f, 1f), new Keyframe(0.1f, 1f), new Keyframe(0.85f, 1f), new Keyframe(1f, 0f));
                         overlay2.destroyComponentOnEnd = true;
                         overlay2.originalMaterial = Overlays.FlameOfLife.prefab2;
-                        overlay2.AddToCharacerModel(modelTransform.GetComponent<CharacterModel>());
+                        overlay2.inspectorCharacterModel = modelTransform.GetComponent<CharacterModel>();
+
+                        var light = modelTransform.GetComponent<Light>();
+                        if (light)
+                        {
+                            light.enabled = true;
+                        }
+
+                        var lightIntensityCurve = modelTransform.GetComponent<LightIntensityCurve>();
+                        if (lightIntensityCurve)
+                        {
+                            lightIntensityCurve.enabled = true;
+                        }
                     }
 
                     if (characterBody && NetworkServer.active)
@@ -109,6 +121,21 @@ namespace EscanorPaladinSkills.States
                 characterBody.RemoveBuff(Buffs.All.flameOfLifeHealingDebuff);
                 characterBody.RemoveBuff(Buffs.All.flameOfLifeBuff);
                 characterBody.AddTimedBuff(Buffs.All.flameOfLifeHealingDebuff, 2f);
+            }
+
+            if (modelTransform)
+            {
+                var light = modelTransform.GetComponent<Light>();
+                if (light)
+                {
+                    light.enabled = false;
+                }
+
+                var lightIntensityCurve = modelTransform.GetComponent<LightIntensityCurve>();
+                if (lightIntensityCurve)
+                {
+                    lightIntensityCurve.enabled = false;
+                }
             }
         }
     }

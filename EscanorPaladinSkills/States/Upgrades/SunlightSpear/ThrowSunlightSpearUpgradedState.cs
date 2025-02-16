@@ -1,4 +1,5 @@
-﻿using PaladinMod.States;
+﻿/*
+using PaladinMod.States;
 
 namespace EscanorPaladinSkills.States.Upgrades.SunlightSpear
 {
@@ -16,11 +17,12 @@ namespace EscanorPaladinSkills.States.Upgrades.SunlightSpear
 
             base.OnEnter();
 
-            /*ChildLocator childLocator = base.GetModelChildLocator();
-            if (childLocator)
-            {
-                childLocator.FindChild("SpearThrowEffect").gameObject.SetActive(true);
-            }*/
+            // ChildLocator childLocator = base.GetModelChildLocator();
+            // if (childLocator)
+            // {
+                // childLocator.FindChild("SpearThrowEffect").gameObject.SetActive(true);
+            // }
         }
     }
 }
+*/

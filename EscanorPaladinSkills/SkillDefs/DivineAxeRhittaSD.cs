@@ -7,7 +7,7 @@ namespace EscanorPaladinSkills.SkillDefs
 {
     public class DivineAxeRhittaSD : SkillDefBase<DivineAxeRhittaSD>
     {
-        public override string NameToken => "DIVINEAXERHITTA";
+        public override string NameToken => "DIVINE_AXE_RHITTA";
 
         public override string NameText => "Divine Axe Rhitta";
 

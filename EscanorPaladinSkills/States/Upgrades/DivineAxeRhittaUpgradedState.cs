@@ -1,4 +1,5 @@
-﻿using EntityStates;
+﻿/*
+using EntityStates;
 using EntityStates.Merc;
 using PaladinMod.Misc;
 using RoR2;
@@ -44,12 +45,12 @@ namespace EscanorPaladinSkills.States.Upgrades
             {
                 hitBoxGroup = Array.Find(modelTransform.GetComponents<HitBoxGroup>(), (x) => x.groupName == "SayGex");
             }
-            /*
-            var swingTrail = swordController.swingEffect.transform.GetChild(0);
-            swingTrail.localScale = new Vector3(3f, 1.5249f, 3f);
-            var swingTrailDistortion = swingTrail.GetChild(0);
-            swingTrailDistortion.localScale = new Vector3(3f, 1.3392f, 3f);
-            */
+
+            // var swingTrail = swordController.swingEffect.transform.GetChild(0);
+            // swingTrail.localScale = new Vector3(3f, 1.5249f, 3f);
+            // var swingTrailDistortion = swingTrail.GetChild(0);
+            // swingTrailDistortion.localScale = new Vector3(3f, 1.3392f, 3f);
+
             Util.PlaySound("PaladinCloth2", gameObject);
 
             var swing = "Slash" + (1 + swingIndex);
@@ -284,3 +285,4 @@ namespace EscanorPaladinSkills.States.Upgrades
         }
     }
 }
+*/

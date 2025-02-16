@@ -1,4 +1,5 @@
-﻿using PaladinMod.Modules;
+﻿/*
+using PaladinMod.Modules;
 using PaladinMod;
 using R2API;
 using RoR2;
@@ -114,3 +115,4 @@ namespace EscanorPaladinSkills.Projectiles
         }
     }
 }
+*/

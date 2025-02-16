@@ -1,4 +1,5 @@
-﻿using PaladinMod.States;
+﻿/*
+using PaladinMod.States;
 using UnityEngine;
 
 namespace EscanorPaladinSkills.States.Upgrades.SunlightSpear
@@ -52,3 +53,4 @@ namespace EscanorPaladinSkills.States.Upgrades.SunlightSpear
         }
     }
 }
+*/

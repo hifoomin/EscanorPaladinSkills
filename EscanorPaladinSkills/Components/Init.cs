@@ -81,27 +81,41 @@ namespace EscanorPaladinSkills.Components
             hitBoxGroup.hitBoxes = new HitBox[] { hitBox.GetComponent<HitBox>() };
             hitBoxGroup.groupName = "SayGex";
 
-            if (body.GetComponent<SkillLocator>().primary.skillDef.skillNameToken == "PALADIN_DIVINEAXERHITTA_NAME")
+            var skillLocator = body.GetComponent<SkillLocator>();
+
+            if (skillLocator.primary.skillDef.skillNameToken == "PALADIN_DIVINE_AXE_RHITTA_NAME")
             {
                 // Main.logger.LogError("m1 is divine axe rhitta");
                 var childLocator = trans.GetComponent<ChildLocator>();
                 var transformPairs = childLocator.transformPairs;
-                if (transformPairs.Length > 36)
+                if (transformPairs.Length > 21)
                 {
                     // Main.logger.LogError("transform pairs has more than 36 elements");
-                    var lowerArmR = childLocator.transformPairs[35].transform;
-                    if (lowerArmR)
+                    var swordBase = childLocator.transformPairs[20].transform;
+                    if (swordBase)
                     {
-                        // Main.logger.LogError("lower arm r exists");
-                        var swordBase = lowerArmR.Find("hand.R/swordBase");
-                        if (swordBase)
-                        {
-                            // Main.logger.LogError("sword base exists");
-                            var swordSizeController = swordBase.gameObject.AddComponent<SwordSizeController>();
-                            swordSizeController.sword = swordBase;
-                        }
+                        var swordSizeController = swordBase.gameObject.AddComponent<SwordSizeController>();
+                        swordSizeController.sword = swordBase;
                     }
                 }
+            }
+
+            if (skillLocator.utility.skillDef.skillNameToken == "PALADIN_FLAME_OF_LIFE_NAME")
+            {
+                // Main.logger.LogFatal("utility is right");
+
+                var light = trans.gameObject.AddComponent<Light>();
+                light.enabled = false;
+                light.range = 20f;
+                light.intensity = 15f;
+                light.color = new Color32(255, 102, 0, 255);
+
+                var lightIntensityCurve = trans.gameObject.AddComponent<LightIntensityCurve>();
+                lightIntensityCurve.enabled = false;
+                lightIntensityCurve.light = light;
+                lightIntensityCurve.maxIntensity = 15f;
+                lightIntensityCurve.timeMax = 8f;
+                lightIntensityCurve.curve = new AnimationCurve(new Keyframe(0f, 1f), new Keyframe(0.85f, 1f), new Keyframe(1f, 0f));
             }
         }
     }

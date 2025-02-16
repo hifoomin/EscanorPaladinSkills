@@ -15,9 +15,24 @@ namespace EscanorPaladinSkills.VFX
         {
             prefab = PrefabAPI.InstantiateClone(Addressables.LoadAssetAsync<GameObject>("RoR2/DLC1/MissileVoid/VoidImpactEffect.prefab").WaitForCompletion(), "Divine Axe Rhitta Impact VFX", false);
 
+            prefab.GetComponent<VFXAttributes>().DoNotPool = true;
+
             var effectComponent = prefab.GetComponent<EffectComponent>();
             effectComponent.soundName = string.Empty;
             effectComponent.applyScale = true;
+
+            var light = prefab.AddComponent<Light>();
+            light.enabled = false;
+            light.range = 13f;
+            light.intensity = 20f;
+            light.color = new Color32(255, 144, 0, 255);
+
+            var lightIntensityCurve = prefab.AddComponent<LightIntensityCurve>();
+            lightIntensityCurve.enabled = false;
+            lightIntensityCurve.light = light;
+            lightIntensityCurve.maxIntensity = 20f;
+            lightIntensityCurve.timeMax = 0.2f;
+            lightIntensityCurve.curve = new AnimationCurve(new Keyframe(0f, 1f), new Keyframe(1f, 0f));
 
             var trans = prefab.transform;
 
