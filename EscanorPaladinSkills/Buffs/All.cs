@@ -84,42 +84,11 @@ namespace EscanorPaladinSkills.Buffs
             GlobalEventManager.onServerDamageDealt += GlobalEventManager_onServerDamageDealt;
             On.RoR2.HealthComponent.Heal += HealthComponent_Heal;
             On.RoR2.CharacterBody.RecalculateStats += CharacterBody_RecalculateStats;
-            On.RoR2.HealthComponent.FixedUpdate += HealthComponent_FixedUpdate;
             On.RoR2.CharacterBody.FixedUpdate += CharacterBody_FixedUpdate;
-            IL.EntityStates.GenericCharacterMain.ProcessJump += GenericCharacterMain_ProcessJump;
+            IL.EntityStates.GenericCharacterMain.ProcessJump_bool += GenericCharacterMain_ProcessJump_bool;
         }
 
-        private static void CharacterBody_FixedUpdate(On.RoR2.CharacterBody.orig_FixedUpdate orig, CharacterBody self)
-        {
-            if (self.HasBuff(flameOfLifeBuff))
-            {
-                self.healthComponent.barrier = Mathf.Max(Mathf.Epsilon, self.healthComponent.barrier);
-            }
-
-            orig(self);
-
-            if (self.HasBuff(flameOfLifeBuff))
-            {
-                self.healthComponent.barrier = Mathf.Max(Mathf.Epsilon, self.healthComponent.barrier);
-            }
-        }
-
-        private static void HealthComponent_FixedUpdate(On.RoR2.HealthComponent.orig_FixedUpdate orig, HealthComponent self)
-        {
-            orig(self);
-        }
-
-        private static void CharacterBody_RecalculateStats(On.RoR2.CharacterBody.orig_RecalculateStats orig, CharacterBody self)
-        {
-            orig(self);
-
-            if (self.HasBuff(theOneCurseDebuff))
-            {
-                self.armor *= 0.6f;
-            }
-        }
-
-        private static void GenericCharacterMain_ProcessJump(ILContext il)
+        private static void GenericCharacterMain_ProcessJump_bool(ILContext il)
         {
             ILCursor c = new(il);
             if (c.TryGotoNext(MoveType.Before,
@@ -142,6 +111,31 @@ namespace EscanorPaladinSkills.Buffs
             else
             {
                 Main.logger.LogError("Failed to apply Jump Hook");
+            }
+        }
+
+        private static void CharacterBody_FixedUpdate(On.RoR2.CharacterBody.orig_FixedUpdate orig, CharacterBody self)
+        {
+            if (self.HasBuff(flameOfLifeBuff) && self.healthComponent)
+            {
+                self.healthComponent.barrier = Mathf.Max(Mathf.Epsilon, self.healthComponent.barrier);
+            }
+
+            orig(self);
+
+            if (self.HasBuff(flameOfLifeBuff) && self.healthComponent)
+            {
+                self.healthComponent.barrier = Mathf.Max(Mathf.Epsilon, self.healthComponent.barrier);
+            }
+        }
+
+        private static void CharacterBody_RecalculateStats(On.RoR2.CharacterBody.orig_RecalculateStats orig, CharacterBody self)
+        {
+            orig(self);
+
+            if (self.HasBuff(theOneCurseDebuff))
+            {
+                self.armor *= 0.6f;
             }
         }
 

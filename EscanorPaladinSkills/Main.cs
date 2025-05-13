@@ -34,7 +34,7 @@ namespace EscanorPaladinSkills
 
         public const string PluginAuthor = "HIFU";
         public const string PluginName = "EscanorPaladinSkills";
-        public const string PluginVersion = "1.1.0";
+        public const string PluginVersion = "1.1.1";
 
         public static AssetBundle escanor;
 
